@@ -1,4 +1,4 @@
-const APP_URL = "https://script.google.com/macros/s/AKfycbysvWwETA5lDzsx6_zi8yPEWFTY05fxNFIUiDIZZ0VvrvwzyefX1WtEcfFTkohdJDqi/exec";
+const APP_URL = "https://script.google.com/macros/s/AKfycbw5Fq8xJeXjPilVb01Iz4lArtrgfq5jd8A55U8Zjp3taVRkni20QrXgHiYa1eEUN1ly/exec";
 
 let investigations = [];
 let prescriptions = [];
@@ -239,3 +239,4 @@ async function submitForm(){
     alert("❌ Fetch error: " + err);
   }
 }
+
