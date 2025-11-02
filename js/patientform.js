@@ -170,8 +170,20 @@ function renderTable(id, data){
   });
 }
 
-// --- DATA HANDLING ---
+// --- FORM DATA + PREVIEW + SUBMIT ---
 function collectFormData(){
+  const inv = [];
+  document.querySelectorAll("#investTable tbody tr").forEach(tr=>{
+    const tds = [...tr.children].map(td=>td.textContent);
+    inv.push(tds);
+  });
+
+  const rx = [];
+  document.querySelectorAll("#rxTable tbody tr").forEach(tr=>{
+    const tds = [...tr.children].map(td=>td.textContent);
+    rx.push(tds);
+  });
+
   return {
     date: val("date"),
     opd: val("opd"),
@@ -189,8 +201,8 @@ function collectFormData(){
     pulse: val("pulse"),
     temp: val("temp"),
     sugar: val("sugar"),
-    investigations,
-    prescriptions,
+    investigations: inv,
+    prescriptions: rx,
     diagnosis: val("diagnosis"),
     advice: val("advice"),
     effect: val("effect"),
@@ -200,23 +212,30 @@ function collectFormData(){
 
 function previewData(){
   const data = collectFormData();
-  alert("Preview:\n"+JSON.stringify(data, null, 2));
+  alert("🩺 Preview Form Data:\n\n" + JSON.stringify(data, null, 2));
 }
 
-function submitForm(){
+async function submitForm(){
   const data = collectFormData();
-  if(!data.patientName){ alert("Enter patient name"); return; }
-  fetch(APP_URL, {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({action:"save", data})
-  })
-  .then(r=>r.json())
-  .then(res=>{
-    if(res.success){
-      alert("Data Saved Successfully!");
+  if(!data.patientName){
+    alert("Please enter patient name");
+    return;
+  }
+
+  try{
+    const res = await fetch(APP_URL, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({action:"save", data})
+    });
+    const result = await res.json();
+    if(result.success){
+      alert("✅ Data saved successfully!");
       location.reload();
-    } else alert("Error: "+res.message);
-  })
-  .catch(err=>alert("Error: "+err));
+    } else {
+      alert("❌ Error: " + result.message);
+    }
+  } catch(err){
+    alert("❌ Fetch error: " + err);
+  }
 }
