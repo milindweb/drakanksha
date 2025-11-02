@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("date").value = new Date().toLocaleDateString('en-GB');
   document.getElementById("opd").value = generateOPD();
   loadDoctors();
+  loadComplaints();
+  loadLabTests();
+  loadMedicines();
 });
 
 function toggleSection(id){
@@ -19,18 +22,83 @@ function generateOPD(){
   return `${now.getFullYear().toString().slice(2)}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
 }
 
+/* ========== LOAD JSON DATA ========== */
+
 function loadDoctors(){
   fetch('data/drname.json')
-  .then(r=>r.json())
-  .then(list=>{
-    const sel = document.getElementById("doctor");
-    list.forEach(d=>{
-      const opt=document.createElement("option");
-      opt.textContent=d;
-      sel.appendChild(opt);
+    .then(r=>r.json())
+    .then(list=>{
+      const sel = document.getElementById("doctor");
+      list.forEach(d=>{
+        const opt=document.createElement("option");
+        opt.textContent=d;
+        sel.appendChild(opt);
+      });
     });
+}
+
+function loadComplaints(){
+  fetch('data/complaint.json')
+    .then(r=>r.json())
+    .then(list=>{
+      setupAutocomplete("chief", list);
+      setupAutocomplete("subsym", list);
+    });
+}
+
+let labTests = [];
+function loadLabTests(){
+  fetch('data/labtest.json')
+    .then(r=>r.json())
+    .then(list=>{
+      labTests = list;
+      const testCats = [...new Set(list.map(t=>t.category))];
+      setupAutocomplete("testcat", testCats);
+
+      // When user types test name
+      const testInput = document.getElementById("testname");
+      setupAutocomplete("testname", list.map(t=>t.test));
+
+      testInput.addEventListener("change", ()=>{
+        const found = labTests.find(t => t.test.toLowerCase() === testInput.value.toLowerCase());
+        if(found) document.getElementById("range").value = found.normalRange || "";
+      });
+    });
+}
+
+let medList = [];
+function loadMedicines(){
+  fetch('data/medlist.json')
+    .then(r=>r.json())
+    .then(list=>{
+      medList = list;
+      setupAutocomplete("formavail", [...new Set(list.map(m=>m.form))]);
+      setupAutocomplete("generic", list.map(m=>m.generic));
+      setupAutocomplete("brand", list.map(m=>m.brand));
+    });
+}
+
+/* ========== AUTOCOMPLETE UTILITY ========== */
+
+function setupAutocomplete(inputId, dataList){
+  const input = document.getElementById(inputId);
+  const datalistId = inputId + "-list";
+  let dl = document.getElementById(datalistId);
+  if(!dl){
+    dl = document.createElement("datalist");
+    dl.id = datalistId;
+    document.body.appendChild(dl);
+    input.setAttribute("list", datalistId);
+  }
+  dl.innerHTML = "";
+  dataList.forEach(v=>{
+    const opt = document.createElement("option");
+    opt.value = v;
+    dl.appendChild(opt);
   });
 }
+
+/* ========== INVESTIGATION / PRESCRIPTION ========== */
 
 function addInvestigation(){
   const t=[val("testcat"), val("testname"), val("reports"), val("range"), val("drremark")];
@@ -41,12 +109,14 @@ function addInvestigation(){
 }
 
 function addPrescription(){
-  const t=[val("formavail"), val("generic"), val("comment")];
+  const t=[val("formavail"), val("generic"), val("brand"), val("comment")];
   if(!t[1]) return alert("Enter medicine name");
   prescriptions.push(t);
   renderTable("rxTable", prescriptions);
-  clear(["formavail","generic","comment"]);
+  clear(["formavail","generic","brand","comment"]);
 }
+
+/* ========== TABLE RENDERING ========== */
 
 function renderTable(id, data){
   const tbody = document.querySelector(`#${id} tbody`);
@@ -61,6 +131,8 @@ function renderTable(id, data){
     tbody.appendChild(tr);
   });
 }
+
+/* ========== FORM HELPERS ========== */
 
 function val(id){ return document.getElementById(id).value.trim(); }
 function clear(ids){ ids.forEach(i=>document.getElementById(i).value=""); }
