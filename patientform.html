@@ -119,124 +119,227 @@
 
   <div id="footer"></div>
 
-  <script>
-    function toggleSection(id) {
-      const body = document.getElementById(id);
-      body.classList.toggle('hidden');
+ <script>
+const APP_URL = "https://script.google.com/macros/s/AKfycbysvWwETA5lDzsx6_zi8yPEWFTY05fxNFIUiDIZZ0VvrvwzyefX1WtEcfFTkohdJDqi/exec";
+
+let investigations = [];
+let prescriptions = [];
+
+// -------------------- Helper Functions --------------------
+function toggleSection(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle("hidden");
+}
+
+function val(id) { return document.getElementById(id).value.trim(); }
+function clear(ids) { ids.forEach(i => document.getElementById(i).value = ""); }
+
+function generateOPD() {
+  const now = new Date();
+  return `${now.getFullYear().toString().slice(2)}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
+}
+
+async function loadJSON(path) {
+  const res = await fetch(path);
+  return await res.json();
+}
+
+// -------------------- Initial Load --------------------
+document.addEventListener("DOMContentLoaded", async () => {
+  document.getElementById("date").value = new Date().toLocaleDateString('en-GB');
+  document.getElementById("opd").value = generateOPD();
+
+  await Promise.all([
+    loadDoctors(),
+    loadComplaints(),
+    loadLabTests(),
+    loadMedicines()
+  ]);
+});
+
+// -------------------- Load Doctors --------------------
+async function loadDoctors() {
+  const data = await loadJSON("data/drname.json");
+  const sel = document.getElementById("doctor");
+  data.doctors.forEach(name => {
+    const opt = document.createElement("option");
+    opt.textContent = name;
+    sel.appendChild(opt);
+  });
+}
+
+// -------------------- Load Complaints --------------------
+async function loadComplaints() {
+  const data = await loadJSON("data/complaint.json");
+  const chiefSel = document.getElementById("chief");
+  const subSel = document.getElementById("subsym");
+
+  data.forEach(item => {
+    const opt = document.createElement("option");
+    opt.textContent = item.chiefComplaint;
+    chiefSel.appendChild(opt);
+  });
+
+  chiefSel.addEventListener("change", () => {
+    subSel.innerHTML = "";
+    const found = data.find(c => c.chiefComplaint === chiefSel.value);
+    if (found && found.subSymptoms) {
+      found.subSymptoms.forEach(sub => {
+        const o = document.createElement("option");
+        o.textContent = sub;
+        subSel.appendChild(o);
+      });
     }
+  });
+}
 
-    // --- Load JSON helper ---
-    async function loadJSON(file) {
-      const res = await fetch(file);
-      return await res.json();
+// -------------------- Load Lab Tests --------------------
+let labData = [];
+async function loadLabTests() {
+  const data = await loadJSON("data/labtest.json");
+  labData = data.laboratoryTests || [];
+  const catList = document.getElementById("catList");
+
+  labData.forEach(cat => {
+    const opt = document.createElement("option");
+    opt.value = cat.category;
+    catList.appendChild(opt);
+  });
+
+  // On category change, populate test names
+  document.getElementById("testcat").addEventListener("input", e => {
+    const testList = document.getElementById("testList");
+    testList.innerHTML = "";
+    const cat = labData.find(c => c.category === e.target.value);
+    if (cat) {
+      cat.tests.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t.testName;
+        testList.appendChild(opt);
+      });
     }
+  });
 
-    // --- Load Complaints ---
-    loadJSON('complaint.json').then(data => {
-      const chiefSel = document.getElementById('chief');
-      data.complaints.forEach(item => {
-        const opt = document.createElement('option');
-        opt.textContent = item.chief;
-        chiefSel.appendChild(opt);
-      });
-
-      chiefSel.addEventListener('change', () => {
-        const subSel = document.getElementById('subsym');
-        subSel.innerHTML = '';
-        const found = data.complaints.find(c => c.chief === chiefSel.value);
-        if (found) {
-          found.subSymptoms.forEach(sub => {
-            const o = document.createElement('option');
-            o.textContent = sub;
-            subSel.appendChild(o);
-          });
-        }
-      });
-    });
-
-    // --- Load Doctors ---
-    loadJSON('drname.json').then(data => {
-      const drSel = document.getElementById('doctor');
-      data.doctors.forEach(name => {
-        const opt = document.createElement('option');
-        opt.textContent = name;
-        drSel.appendChild(opt);
-      });
-    });
-
-    // --- Load Lab Tests ---
-    let labData = [];
-    loadJSON('labtest.json').then(data => {
-      labData = data.categories;
-      const catList = document.getElementById('catList');
-      data.categories.forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat.category;
-        catList.appendChild(opt);
-      });
-    });
-
-    document.getElementById('testcat').addEventListener('input', e => {
-      const testList = document.getElementById('testList');
-      testList.innerHTML = '';
-      const cat = labData.find(c => c.category === e.target.value);
-      if (cat) {
-        cat.tests.forEach(t => {
-          const opt = document.createElement('option');
-          opt.value = t.name;
-          testList.appendChild(opt);
-        });
-      }
-    });
-
-    document.getElementById('testname').addEventListener('input', e => {
-      const cat = labData.find(c => c.category === document.getElementById('testcat').value);
-      if (cat) {
-        const test = cat.tests.find(t => t.name === e.target.value);
-        if (test) document.getElementById('range').value = test.normal;
-      }
-    });
-
-    // --- Load Medicines ---
-    loadJSON('medlist.json').then(data => {
-      const medList = document.getElementById('medList');
-      const formList = document.getElementById('formList');
-      const forms = new Set();
-      data.medicines.forEach(m => {
-        const opt = document.createElement('option');
-        opt.value = `${m.generic} (${m.brand})`;
-        medList.appendChild(opt);
-        forms.add(m.form);
-      });
-      forms.forEach(f => {
-        const opt = document.createElement('option');
-        opt.value = f;
-        formList.appendChild(opt);
-      });
-    });
-
-    // --- Table Add Functions (logic retained) ---
-    function addInvestigation() {
-      const table = document.getElementById('investTable').querySelector('tbody');
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${testcat.value}</td>
-        <td>${testname.value}</td>
-        <td>${reports.value}</td>
-        <td>${range.value}</td>
-        <td>${drremark.value}</td>`;
-      table.appendChild(tr);
+  // On test name change, show normal range
+  document.getElementById("testname").addEventListener("input", e => {
+    const cat = labData.find(c => c.category === document.getElementById("testcat").value);
+    if (cat) {
+      const test = cat.tests.find(t => t.testName === e.target.value);
+      if (test) document.getElementById("range").value = test.normalRange;
     }
+  });
+}
 
-    function addPrescription() {
-      const table = document.getElementById('rxTable').querySelector('tbody');
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${formavail.value}</td>
-        <td>${generic.value}</td>
-        <td>${comment.value}</td>`;
-      table.appendChild(tr);
+// -------------------- Load Medicines --------------------
+async function loadMedicines() {
+  const data = await loadJSON("data/medlist.json");
+  const medList = document.getElementById("medList");
+  const formList = document.getElementById("formList");
+  const forms = new Set();
+
+  data.forEach(m => {
+    const genericName = m["Generic "][" API (Single or Combination)"];
+    const brandNames = m["Common Brand Names (India)"];
+    const opt = document.createElement("option");
+    opt.value = `${genericName} (${brandNames})`;
+    medList.appendChild(opt);
+
+    if (m["Forms Available"]) {
+      m["Forms Available"].split(",").forEach(f => forms.add(f.trim()));
     }
-  </script>
+  });
+
+  forms.forEach(f => {
+    const opt = document.createElement("option");
+    opt.value = f;
+    formList.appendChild(opt);
+  });
+}
+
+// -------------------- Investigation & Prescription --------------------
+function addInvestigation() {
+  const t = [val("testcat"), val("testname"), val("reports"), val("range"), val("drremark")];
+  if (!t[1]) return alert("Enter test name");
+  investigations.push(t);
+  renderTable("investTable", investigations);
+  clear(["testcat","testname","reports","range","drremark"]);
+}
+
+function addPrescription() {
+  const t = [val("formavail"), val("generic"), val("comment")];
+  if (!t[1]) return alert("Enter medicine name");
+  prescriptions.push(t);
+  renderTable("rxTable", prescriptions);
+  clear(["formavail","generic","comment"]);
+}
+
+function renderTable(id, data) {
+  const tbody = document.querySelector(`#${id} tbody`);
+  tbody.innerHTML = "";
+  data.forEach(r => {
+    const tr = document.createElement("tr");
+    r.forEach(c => {
+      const td = document.createElement("td");
+      td.textContent = c;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+// -------------------- Collect and Submit --------------------
+function collectFormData() {
+  return {
+    date: val("date"),
+    opd: val("opd"),
+    patientName: val("pname"),
+    mobile: val("mobile"),
+    gender: val("gender"),
+    age: val("age"),
+    department: val("dept"),
+    doctor: val("doctor"),
+    chiefComplaint: val("chief"),
+    subSymptoms: val("subsym"),
+    specificComplaint: val("specific"),
+    weight: val("weight"),
+    bp: val("bp"),
+    pulse: val("pulse"),
+    temp: val("temp"),
+    sugar: val("sugar"),
+    investigations,
+    prescriptions,
+    diagnosis: val("diagnosis"),
+    advice: val("advice"),
+    effect: val("effect"),
+    drRemarks: val("remarks")
+  };
+}
+
+function previewData() {
+  const data = collectFormData();
+  alert("Preview:\n" + JSON.stringify(data, null, 2));
+}
+
+function submitForm() {
+  const data = collectFormData();
+  if (!data.patientName) { alert("Enter patient name"); return; }
+
+  fetch(APP_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "save", data })
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.success) {
+      alert("Data Saved Successfully!");
+      location.reload();
+    } else alert("Error: " + res.message);
+  })
+  .catch(err => alert("Error: " + err));
+}
+</script>
+
 </body>
 </html>
+
