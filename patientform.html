@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -6,7 +6,6 @@
   <title>Patient Form - NAD Patient Management</title>
   <link rel="stylesheet" href="css/headerfooter.css">
   <script src="js/headerfooter.js" defer></script>
-  <script src="js/patientform.js" defer></script>
   <style>
     body { font-family: 'Segoe UI', sans-serif; margin:0; background:#f5f7fa; }
     .section { background:#fff; margin:10px auto; border-radius:10px; padding:15px; box-shadow:0 2px 6px rgba(0,0,0,0.1); width:95%; max-width:1200px; }
@@ -53,8 +52,8 @@
     <h3 onclick="toggleSection('clinical-body')">Clinical Info <span>Show/Hide</span></h3>
     <div id="clinical-body">
       <div class="form-row">
-        <div class="form-group"><label>Chief Complaint</label><textarea id="chief"></textarea></div>
-        <div class="form-group"><label>Sub-Symptoms</label><textarea id="subsym"></textarea></div>
+        <div class="form-group"><label>Chief Complaint</label><select id="chief"></select></div>
+        <div class="form-group"><label>Sub-Symptoms</label><select id="subsym"></select></div>
         <div class="form-group"><label>Specific Complaint</label><textarea id="specific"></textarea></div>
       </div>
     </div>
@@ -77,10 +76,12 @@
     <h3 onclick="toggleSection('invest-body')">Investigations <span>Show/Hide</span></h3>
     <div id="invest-body">
       <div class="form-row">
-        <input placeholder="Test Category" id="testcat">
-        <input placeholder="Test Name" id="testname">
+        <input placeholder="Test Category" id="testcat" list="catList">
+        <datalist id="catList"></datalist>
+        <input placeholder="Test Name" id="testname" list="testList">
+        <datalist id="testList"></datalist>
         <input placeholder="Reports" id="reports">
-        <input placeholder="Normal Range / Limit" id="range">
+        <input placeholder="Normal Range / Limit" id="range" readonly>
         <input placeholder="Dr.Remark" id="drremark">
         <button onclick="addInvestigation()">Add</button>
       </div>
@@ -93,8 +94,10 @@
     <div id="treat-body">
       <div class="form-group"><label>Diagnosis</label><textarea id="diagnosis"></textarea></div>
       <div class="form-row">
-        <input placeholder="Form (Tablet/Syrup/Injection)" id="formavail">
-        <input placeholder="Generic / API / Brand" id="generic">
+        <input placeholder="Form (Tablet/Syrup/Injection)" id="formavail" list="formList">
+        <datalist id="formList"></datalist>
+        <input placeholder="Generic / API / Brand" id="generic" list="medList">
+        <datalist id="medList"></datalist>
         <input placeholder="Comment" id="comment">
         <button onclick="addPrescription()">Add</button>
       </div>
@@ -115,5 +118,125 @@
   </div>
 
   <div id="footer"></div>
+
+  <script>
+    function toggleSection(id) {
+      const body = document.getElementById(id);
+      body.classList.toggle('hidden');
+    }
+
+    // --- Load JSON helper ---
+    async function loadJSON(file) {
+      const res = await fetch(file);
+      return await res.json();
+    }
+
+    // --- Load Complaints ---
+    loadJSON('complaint.json').then(data => {
+      const chiefSel = document.getElementById('chief');
+      data.complaints.forEach(item => {
+        const opt = document.createElement('option');
+        opt.textContent = item.chief;
+        chiefSel.appendChild(opt);
+      });
+
+      chiefSel.addEventListener('change', () => {
+        const subSel = document.getElementById('subsym');
+        subSel.innerHTML = '';
+        const found = data.complaints.find(c => c.chief === chiefSel.value);
+        if (found) {
+          found.subSymptoms.forEach(sub => {
+            const o = document.createElement('option');
+            o.textContent = sub;
+            subSel.appendChild(o);
+          });
+        }
+      });
+    });
+
+    // --- Load Doctors ---
+    loadJSON('drname.json').then(data => {
+      const drSel = document.getElementById('doctor');
+      data.doctors.forEach(name => {
+        const opt = document.createElement('option');
+        opt.textContent = name;
+        drSel.appendChild(opt);
+      });
+    });
+
+    // --- Load Lab Tests ---
+    let labData = [];
+    loadJSON('labtest.json').then(data => {
+      labData = data.categories;
+      const catList = document.getElementById('catList');
+      data.categories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat.category;
+        catList.appendChild(opt);
+      });
+    });
+
+    document.getElementById('testcat').addEventListener('input', e => {
+      const testList = document.getElementById('testList');
+      testList.innerHTML = '';
+      const cat = labData.find(c => c.category === e.target.value);
+      if (cat) {
+        cat.tests.forEach(t => {
+          const opt = document.createElement('option');
+          opt.value = t.name;
+          testList.appendChild(opt);
+        });
+      }
+    });
+
+    document.getElementById('testname').addEventListener('input', e => {
+      const cat = labData.find(c => c.category === document.getElementById('testcat').value);
+      if (cat) {
+        const test = cat.tests.find(t => t.name === e.target.value);
+        if (test) document.getElementById('range').value = test.normal;
+      }
+    });
+
+    // --- Load Medicines ---
+    loadJSON('medlist.json').then(data => {
+      const medList = document.getElementById('medList');
+      const formList = document.getElementById('formList');
+      const forms = new Set();
+      data.medicines.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = `${m.generic} (${m.brand})`;
+        medList.appendChild(opt);
+        forms.add(m.form);
+      });
+      forms.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = f;
+        formList.appendChild(opt);
+      });
+    });
+
+    // --- Table Add Functions (logic retained) ---
+    function addInvestigation() {
+      const table = document.getElementById('investTable').querySelector('tbody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${testcat.value}</td>
+        <td>${testname.value}</td>
+        <td>${reports.value}</td>
+        <td>${range.value}</td>
+        <td>${drremark.value}</td>`;
+      table.appendChild(tr);
+    }
+
+    function addPrescription() {
+      const table = document.getElementById('rxTable').querySelector('tbody');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${formavail.value}</td>
+        <td>${generic.value}</td>
+        <td>${comment.value}</td>`;
+      table.appendChild(tr);
+    }
+  </script>
 </body>
 </html>
