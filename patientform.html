@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Form - NAD Patient Management</title>
+  <link rel="stylesheet" href="css/headerfooter.css">
+  <script src="js/headerfooter.js" defer></script>
+  <script src="js/patientform.js" defer></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin:0; background:#f5f7fa; }
+    .section { background:#fff; margin:10px auto; border-radius:10px; padding:15px; box-shadow:0 2px 6px rgba(0,0,0,0.1); width:95%; max-width:1200px; }
+    .section h3 { display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+    .section h3 span { font-size:0.8em; color:#007bff; }
+    .form-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+    .form-group { flex:1 1 200px; display:flex; flex-direction:column; }
+    label { font-size:0.9em; font-weight:600; color:#444; margin-bottom:3px; }
+    input, select, textarea { padding:8px; border:1px solid #ccc; border-radius:5px; font-size:0.9em; }
+    textarea { resize:vertical; min-height:40px; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    table th, table td { border:1px solid #ddd; padding:6px; font-size:0.9em; }
+    table th { background:#e9ecef; }
+    button { background:#007bff; color:white; border:none; padding:8px 14px; border-radius:5px; cursor:pointer; }
+    button:hover { background:#0056b3; }
+    .hidden { display:none; }
+  </style>
+</head>
+
+<body>
+  <div id="header"></div>
+
+  <div class="section" id="basic-info">
+    <h3 onclick="toggleSection('basic-body')">Basic Info <span>Show/Hide</span></h3>
+    <div id="basic-body">
+      <div class="form-row">
+        <div class="form-group"><label>Date</label><input type="text" id="date"></div>
+        <div class="form-group"><label>OPD No</label><input type="text" id="opd"></div>
+        <div class="form-group"><label>Patient Name</label><input type="text" id="pname"></div>
+        <div class="form-group"><label>Mobile No.</label><input type="text" id="mobile"></div>
+        <div class="form-group"><label>Gender</label>
+          <select id="gender"><option>Male</option><option>Female</option><option>Other</option></select>
+        </div>
+        <div class="form-group"><label>Age</label><input type="number" id="age"></div>
+        <div class="form-group"><label>Department</label>
+          <select id="dept"><option>General</option><option>Gynaecology</option></select>
+        </div>
+        <div class="form-group"><label>Doctor</label><select id="doctor"></select></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="clinical">
+    <h3 onclick="toggleSection('clinical-body')">Clinical Info <span>Show/Hide</span></h3>
+    <div id="clinical-body">
+      <div class="form-row">
+        <div class="form-group"><label>Chief Complaint</label><textarea id="chief"></textarea></div>
+        <div class="form-group"><label>Sub-Symptoms</label><textarea id="subsym"></textarea></div>
+        <div class="form-group"><label>Specific Complaint</label><textarea id="specific"></textarea></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="vitals">
+    <h3 onclick="toggleSection('vitals-body')">Vitals <span>Show/Hide</span></h3>
+    <div id="vitals-body">
+      <div class="form-row">
+        <div class="form-group"><label>Weight (kg)</label><input id="weight" type="number"><small>Normal: 50–80</small></div>
+        <div class="form-group"><label>BP</label><input id="bp" type="text"><small>Normal: 120/80</small></div>
+        <div class="form-group"><label>Pulse</label><input id="pulse" type="number"><small>Normal: 60–100</small></div>
+        <div class="form-group"><label>Temp (°F)</label><input id="temp" type="number"><small>Normal: 97–99</small></div>
+        <div class="form-group"><label>Sugar</label><input id="sugar" type="number"><small>Normal: 70–120</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="investigations">
+    <h3 onclick="toggleSection('invest-body')">Investigations <span>Show/Hide</span></h3>
+    <div id="invest-body">
+      <div class="form-row">
+        <input placeholder="Test Category" id="testcat">
+        <input placeholder="Test Name" id="testname">
+        <input placeholder="Reports" id="reports">
+        <input placeholder="Normal Range / Limit" id="range">
+        <input placeholder="Dr.Remark" id="drremark">
+        <button onclick="addInvestigation()">Add</button>
+      </div>
+      <table id="investTable"><thead><tr><th>Category</th><th>Name</th><th>Report</th><th>Limit</th><th>Remark</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="section" id="treatment">
+    <h3 onclick="toggleSection('treat-body')">Treatment <span>Show/Hide</span></h3>
+    <div id="treat-body">
+      <div class="form-group"><label>Diagnosis</label><textarea id="diagnosis"></textarea></div>
+      <div class="form-row">
+        <input placeholder="Form (Tablet/Syrup/Injection)" id="formavail">
+        <input placeholder="Generic / API / Brand" id="generic">
+        <input placeholder="Comment" id="comment">
+        <button onclick="addPrescription()">Add</button>
+      </div>
+      <table id="rxTable"><thead><tr><th>Form</th><th>Medicine</th><th>Comment</th></tr></thead><tbody></tbody></table>
+      <div class="form-group"><label>Advice</label><textarea id="advice"></textarea></div>
+      <div class="form-group"><label>Effect After Treatment</label>
+        <select id="effect"><option>Improved</option><option>No Change</option><option>Worse</option></select>
+      </div>
+      <div class="form-group"><label>Dr. Note / Remarks</label><textarea id="remarks"></textarea></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="form-row" style="justify-content:space-between;">
+      <button onclick="previewData()">Preview</button>
+      <button onclick="submitForm()">Submit</button>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+</body>
+</html>
