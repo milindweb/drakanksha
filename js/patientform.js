@@ -170,20 +170,36 @@ function renderTable(id, data){
   });
 }
 
-// --- FORM DATA + PREVIEW + SUBMIT ---
+
+
 function collectFormData(){
+  // ---- INVESTIGATION TABLE ----
   const inv = [];
   document.querySelectorAll("#investTable tbody tr").forEach(tr=>{
-    const tds = [...tr.children].map(td=>td.textContent);
+    const tds = [...tr.children].map(td=>td.textContent.trim());
     inv.push(tds);
   });
 
+  // Convert multiple investigation rows → newline-separated strings
+  const testCategory = inv.map(r => r[0]).join('\n');
+  const testName     = inv.map(r => r[1]).join('\n');
+  const reports      = inv.map(r => r[2]).join('\n');
+  const normalRange  = inv.map(r => r[3]).join('\n');
+  const drRemark     = inv.map(r => r[4]).join('\n');
+
+  // ---- PRESCRIPTION TABLE ----
   const rx = [];
   document.querySelectorAll("#rxTable tbody tr").forEach(tr=>{
-    const tds = [...tr.children].map(td=>td.textContent);
+    const tds = [...tr.children].map(td=>td.textContent.trim());
     rx.push(tds);
   });
 
+  // Convert multiple prescription rows → newline-separated strings
+  const formAvail = rx.map(r => r[0]).join('\n');
+  const medicine  = rx.map(r => r[1]).join('\n');
+  const comment   = rx.map(r => r[2]).join('\n');
+
+  // ---- RETURN FINAL DATA ----
   return {
     date: val("date"),
     opd: val("opd"),
@@ -201,8 +217,9 @@ function collectFormData(){
     pulse: val("pulse"),
     temp: val("temp"),
     sugar: val("sugar"),
-    investigations: inv,
-    prescriptions: rx,
+    // New flattened multiline fields
+    testCategory, testName, reports, normalRange, drRemark,
+    formAvail, medicine, comment,
     diagnosis: val("diagnosis"),
     advice: val("advice"),
     effect: val("effect"),
@@ -210,33 +227,65 @@ function collectFormData(){
   };
 }
 
-function previewData(){
+
+function previewData() {
   const data = collectFormData();
-  alert("🩺 Preview Form Data:\n\n" + JSON.stringify(data, null, 2));
+
+  // --- Build readable HTML preview ---
+  let html = `
+  <h3>🩺 Patient Form Preview</h3>
+  <hr>
+  <h4>🧍 Basic Info</h4>
+  <p><b>Date:</b> ${data.date}</p>
+  <p><b>OPD No:</b> ${data.opd}</p>
+  <p><b>Patient Name:</b> ${data.patientName}</p>
+  <p><b>Mobile No:</b> ${data.mobile}</p>
+  <p><b>Gender:</b> ${data.gender}</p>
+  <p><b>Age:</b> ${data.age}</p>
+  <p><b>Department:</b> ${data.department}</p>
+  <p><b>Doctor:</b> ${data.doctor}</p>
+  <p><b>Chief Complaint:</b> ${data.chiefComplaint}</p>
+  <p><b>Sub-Symptoms:</b> ${data.subSymptoms}</p>
+  <p><b>Specific Complaint:</b> ${data.specificComplaint}</p>
+
+  <h4>💓 Vitals</h4>
+  <p><b>Weight:</b> ${data.weight}</p>
+  <p><b>BP:</b> ${data.bp}</p>
+  <p><b>Pulse:</b> ${data.pulse}</p>
+  <p><b>Temp:</b> ${data.temp}</p>
+  <p><b>Sugar:</b> ${data.sugar}</p>
+
+  <h4>🧪 Investigations</h4>
+  <table border="1" style="border-collapse:collapse;width:100%;text-align:left;">
+    <tr><th>Category</th><th>Name</th><th>Report</th><th>Limit</th><th>Remark</th></tr>
+    ${data.investigations.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}
+  </table>
+
+  <h4>💊 Prescriptions</h4>
+  <table border="1" style="border-collapse:collapse;width:100%;text-align:left;">
+    <tr><th>Form</th><th>Medicine</th><th>Comment</th></tr>
+    ${data.prescriptions.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}
+  </table>
+
+  <h4>🩹 Treatment / Diagnosis</h4>
+  <p><b>Diagnosis:</b> ${data.diagnosis}</p>
+  <p><b>Advice:</b> ${data.advice}</p>
+  <p><b>Effect:</b> ${data.effect}</p>
+
+  <h4>📝 Doctor Remark</h4>
+  <p>${data.drRemarks}</p>
+  `;
+
+  // --- Show in modal-like preview ---
+  const w = window.open("", "Preview", "width=800,height=700,scrollbars=yes");
+  w.document.write(`
+    <html><head><title>Patient Preview</title>
+    <style>
+      body { font-family: Arial; padding: 20px; line-height:1.6; }
+      h3,h4 { margin-top: 20px; }
+      table, th, td { border:1px solid #ccc; padding:6px; }
+      th { background:#f5f5f5; }
+    </style>
+    </head><body>${html}</body></html>
+  `);
 }
-
-async function submitForm(){
-  const data = collectFormData();
-  if(!data.patientName){
-    alert("Please enter patient name");
-    return;
-  }
-
-  try{
-    const res = await fetch(APP_URL, {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({action:"save", data})
-    });
-    const result = await res.json();
-    if(result.success){
-      alert("✅ Data saved successfully!");
-      location.reload();
-    } else {
-      alert("❌ Error: " + result.message);
-    }
-  } catch(err){
-    alert("❌ Fetch error: " + err);
-  }
-}
-
