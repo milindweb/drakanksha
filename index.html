@@ -3,492 +3,250 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MilindWeb - Smart Technical Services</title>
+  <title>Dr. Akanksha Pandit | Clinic</title>
+  <link rel="icon" type="image/png" href="img/favicon.png">
+
+  <!-- Header + Footer CSS -->
+  <link rel="stylesheet" href="css/headerfooter.css">
+
+  <!-- Font Awesome (for icons) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="css/headerfooter.css" />
+
+  <!-- JS to load header/footer -->
+  <script src="js/headerfooter.js" defer></script>
+
   <style>
     :root {
-      --primary-bg: #ffffff;
-      --secondary-bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --accent: #2563eb;
-      --accent-light: #3b82f6;
-      --border: #e2e8f0;
-      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --transition: all 0.3s ease;
-      --gradient: linear-gradient(135deg, #2563eb, #7c3aed);
-    }
-
-    .dark-mode {
-      --primary-bg: #0f172a;
-      --secondary-bg: #1e293b;
-      --card-bg: #1e293b;
-      --text-primary: #f1f5f9;
-      --text-secondary: #cbd5e1;
-      --accent: #60a5fa;
-      --accent-light: #93c5fd;
-      --border: #334155;
-      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      --primary: #1976d2;
+      --secondary: #f7faff;
+      --accent: #0d47a1;
+      --text: #222;
     }
 
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
     }
 
     body {
-      background-color: var(--primary-bg);
-      color: var(--text-primary);
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      line-height: 1.6;
-      transition: var(--transition);
-      min-height: 100vh;
+      background: var(--secondary);
+      color: var(--text);
       display: flex;
       flex-direction: column;
+      min-height: 100vh;
     }
 
-    .main-container {
-      padding: 4rem 1.5rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      flex: 1;
-      width: 100%;
+    /* === HERO SECTION === */
+    .hero {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
     }
 
-    section {
-      margin-bottom: 3rem;
-      animation: fadeIn 0.8s ease-out;
+    .hero h1 {
+      font-size: 2rem;
+      color: var(--accent);
+      font-weight: 600;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .hero p {
+      margin: 0.4rem 0;
+      color: #555;
     }
 
-    h2 {
-      font-size: 1.75rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-weight: 700;
-      position: relative;
-      padding-bottom: 0.75rem;
+    /* === SECTIONS === */
+    .section {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
     }
 
-    h2::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 60px;
-      height: 4px;
-      background: var(--gradient);
-      border-radius: 2px;
+    .section h2 {
+      text-align: center;
+      color: var(--accent);
+      margin-bottom: 1rem;
     }
 
-    .cards-grid {
+    /* === CARD GRID === */
+    .card-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 1.5rem;
       justify-content: center;
-    }
-
-    .card-link {
-      flex: 1 1 280px;
-      max-width: 350px;
-      min-width: 280px;
-      text-decoration: none;
-      color: inherit;
+      gap: 1.5rem;
     }
 
     .card {
-      background-color: var(--card-bg);
+      background: white;
+      padding: 1.5rem;
       border-radius: 12px;
-      padding: 1.75rem;
-      box-shadow: var(--card-shadow);
-      transition: var(--transition);
-      border: 1px solid var(--border);
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: var(--gradient);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
+      flex: 1 1 260px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
     }
 
     .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .card:hover::before {
-      transform: scaleX(1);
+      transform: translateY(-4px);
     }
 
     .card h3 {
-      font-size: 1.25rem;
-      margin-bottom: 0.75rem;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .card p {
-      color: var(--text-secondary);
+      color: var(--primary);
       margin-bottom: 0.5rem;
-      font-size: 0.95rem;
     }
 
-    .card-icon {
-      font-size: 1.5rem;
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      width: 36px;
-      height: 36px;
+    /* === APPOINTMENT === */
+    .appointment {
+      text-align: center;
+      background: var(--primary);
+      color: white;
+      padding: 2.5rem 1.5rem;
+      border-radius: 14px;
+      max-width: 850px;
+      margin: 3rem auto;
+    }
+
+    .btn {
+      display: inline-block;
+      background: white;
+      color: var(--primary);
+      padding: 0.7rem 1.3rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* === SOCIAL LINKS === */
+    .social-links {
       display: flex;
-      align-items: center;
       justify-content: center;
-      border-radius: 8px;
-    }
-
-    /* Team Section (unchanged as requested) */
-    .team-section {
-      background: var(--secondary-bg);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: var(--card-shadow);
-      border: 1px solid var(--border);
-    }
-
-    .team-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
+      gap: 1.2rem;
       margin-top: 1rem;
     }
 
-    .team-member {
-      flex: 1 1 300px;
+    .social-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+
+    .social-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* === PAYMENT QR === */
+    .payment-section {
+      text-align: center;
+      background: white;
+      padding: 2rem 1rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       max-width: 400px;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.8rem;
+      margin: 2rem auto;
+    }
+
+    .payment-section img {
+      width: 180px;
+      height: auto;
       border-radius: 8px;
-      transition: all 0.3s ease;
-      border: 1px solid var(--border);
-      background: var(--card-bg);
+      margin-top: 1rem;
+      border: 1px solid #ddd;
     }
 
-    .team-member:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-      border-color: var(--accent-light);
+    .payment-section p {
+      margin-top: 0.5rem;
+      color: #333;
     }
 
-    .member-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      color: white;
-      flex-shrink: 0;
-      background: var(--gradient);
+    /* === FOOTER SPACE FIX === */
+    #footer {
+      margin-top: auto;
     }
 
-    .member-info {
-      flex: 1;
-    }
-
-    .member-info h4 {
-      font-size: 1rem;
-      color: var(--accent);
-      margin-bottom: 0.1rem;
-    }
-
-    .member-info p {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.4;
-    }
-
-    .theme-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--gradient);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      z-index: 100;
-      border: none;
-      transition: var(--transition);
-    }
-
-    .theme-toggle:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Optimized Mobile Card Spacing */
-    @media (max-width: 768px) {
-      .main-container {
-        padding: 1rem 0.75rem;
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 1.5rem;
       }
-      
-      section {
-        margin-bottom: 1.5rem;
-      }
-      
-      .cards-grid {
-        gap: 0.5rem;
-      }
-      
-      .card-link {
-        min-width: calc(100% - 0.5rem);
-        margin: 0.1rem 0.25rem;
-      }
-      
       .card {
-        padding: 1rem;
-        margin: 0;
+        flex: 1 1 100%;
       }
-      
-      .card h3 {
-        margin-bottom: 0.5rem;
-        font-size: 1.1rem;
-      }
-      
-      .card p {
-        margin-bottom: 0.3rem;
-        font-size: 0.9rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .card {
-        padding: 0.8rem;
-      }
-      
-      .card-link {
-        min-width: calc(100% - 0.4rem);
-        margin: 0.1rem 0.2rem;
+      .payment-section img {
+        width: 140px;
       }
     }
   </style>
 </head>
+
 <body>
-  <!-- Header include -->
+
+  <!-- Header Placeholder -->
   <div id="header"></div>
-  
-  <main class="main-container">
-    <section>
-      <div class="cards-grid">
-        <a href="freelance_seo_consultant.html" class="card-link">
-          <div class="card" style="animation-delay: 0.1s">
-            <h3><span class="card-icon"><i class="fas fa-bullhorn"></i></span>DIGITAL MARKETING</h3>
-            <p>Freelance digital marketing and SEO consulting services.</p>
-          </div>
-        </a>
 
-        <a href="graphics.html" class="card-link">
-          <div class="card" style="animation-delay: 0.5s">
-            <h3><span class="card-icon"><i class="fas fa-paint-brush"></i></span>GRAPHICS DESIGN</h3>
-            <p>Design banners, cards, logos & video editing.</p>
-          </div>
-        </a>
-       
-        <a href="website-tech-solutions.html" class="card-link">
-          <div class="card" style="animation-delay: 0.3s">
-            <h3><span class="card-icon"><i class="fas fa-robot"></i></span>TECH SOLUTIONS</h3>
-            <p>Software, tools, apps, and websites for startups.</p>
-          </div>
-        </a>
+  <!-- === HERO === -->
+  <section class="hero">
+    <h1>Welcome to Dr. Akanksha Pandit’s Clinic</h1>
+    <p>MBBS (GSMC JJ Mumbai)</p>
+    <p>Providing trusted and personalized healthcare in Ambanagar, Nanded</p>
+  </section>
 
-        <a href="project.html" class="card-link">
-          <div class="card" style="animation-delay: 0.2s">
-            <h3><span class="card-icon"><i class="fas fa-project-diagram"></i></span> PROJECTS</h3>
-            <p>Innovative projects for engineering students.</p>
-          </div>
-        </a>
-        
-        <a href="workshop.html" class="card-link">
-          <div class="card" style="animation-delay: 0.4s">
-            <h3><span class="card-icon"><i class="fas fa-tools"></i></span> WORKSHOPS</h3>
-            <p>Hands-on training with Arduino/ESP32 kits.</p>
-          </div>
-        </a>
-
-        <a href="blog.html" class="card-link">
-          <div class="card" style="animation-delay: 0.7s">
-            <h3><span class="card-icon"><i class="fas fa-blog"></i></span> BLOG & TUTORIALS</h3>
-            <p>Tech news, tips, and project tutorials.</p>
-          </div>
-        </a>
-        
-        <a href="Seniariity_List.html" class="card-link">
-          <div class="card" style="animation-delay: 0.6s">
-            <h3><span class="card-icon"><i class="fas fa-chart-bar"></i></span> SENIORITY MANAGER</h3>
-            <p>Track employee promotions and seniority.</p>
-          </div>
-        </a>
-        
+  <!-- === SERVICES === -->
+  <section class="section">
+    <h2>Our Services</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>General Consultation</h3>
+        <p>Personalized medical advice and treatment for everyday health concerns.</p>
       </div>
-    </section>
-    
-    <!-- Team Section (unchanged as requested) -->
-    <section class="team-section">
-      <h2><i class="fas fa-users"></i> OUR TEAM</h2>
-      
-      <div class="team-grid">
-        <div class="team-member">
-          <div class="member-avatar" aria-hidden="true"><i class="fas fa-user"></i></div>
-          <div class="member-info">
-            <h4>Er. M!l!nd</h4>
-            <p>DEE, B.E (Instrumentation), 7+ yrs exp. in defence industry & Founder</p>
-          </div>
-        </div>
-
-        <div class="team-member">
-          <div class="member-avatar" aria-hidden="true"><i class="fas fa-user"></i></div>
-          <div class="member-info">
-            <h4>Er. Aarti</h4>
-            <p>DEE, B.E (Electrical), Digital Marketing Executive, 2+ yrs experience</p>
-          </div>
-        </div>
-
-        <div class="team-member">
-          <div class="member-avatar" aria-hidden="true"><i class="fas fa-user"></i></div>
-          <div class="member-info">
-            <h4>Er. Anand</h4>
-            <p>DEE, B.E (Computer),5+ yrs exp in System Admin, wotking in Honeywell Automation</p>
-          </div>
-        </div>
-        
-        <div class="team-member">
-          <div class="member-avatar" aria-hidden="true"><i class="fas fa-user"></i></div>
-          <div class="member-info">
-            <h4>Mr. Swapnil</h4>
-            <p>B.Sc, 8 yrs experience in finance & operations</p>
-          </div>
-        </div>
-        
-        <div class="team-member">
-          <div class="member-avatar" aria-hidden="true"><i class="fas fa-user"></i></div>
-          <div class="member-info">
-            <h4>Er. Vishnu</h4>
-            <p>DEE, B.E (Instrumentation), 7+ yrs in MATLAB and LabVIEW simulations</p>
-          </div>
-        </div>
-        
-        <div class="team-member">
-          <div class="member-avatar" aria-hidden="true"><i class="fas fa-user"></i></div>
-          <div class="member-info">
-            <h4>Mr. Sandesh S.</h4>
-            <p>20+ years experience in Electronics, Arduino, and PCB repair</p>
-          </div>
-        </div>
-        
-        <div class="team-member">
-          <div class="member-avatar" aria-hidden="true"><i class="fas fa-user"></i></div>
-          <div class="member-info">
-            <h4>Mr. Sandeep Tayade</h4>
-            <p>Expert in electronics and mechanical system repairs </p>
-          </div>
-        </div>
+      <div class="card">
+        <h3>Preventive Health Checkups</h3>
+        <p>Comprehensive screening for early detection and better wellness.</p>
       </div>
-    </section>
-  </main>
-  
-  <!-- Footer include -->
+      <div class="card">
+        <h3>Online Consultation</h3>
+        <p>Available daily from 17:00 to 20:00 hrs (Sunday closed).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- === APPOINTMENT === -->
+  <section class="appointment">
+    <h2>Book Your Appointment</h2>
+    <p>Connect easily via WhatsApp or Telegram for online consultation.</p>
+
+    <a href="https://wa.me/919960xxxxxx?text=Hello%20Dr.%20Akanksha%2C%20I%20would%20like%20to%20book%20an%20appointment." class="btn">
+      <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+    </a>
+
+    <div class="social-links">
+      <a href="https://t.me/akanksha" target="_blank"><i class="fa-brands fa-telegram"></i> Telegram</a>
+      <a href="https://instagram.com/akanksha" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a>
+    </div>
+  </section>
+
+  <!-- === LOCATION & PAYMENT === -->
+  <section class="section" style="text-align:center;">
+    <h2>Visit Us</h2>
+    <p>Ambanagar, Nanded</p>
+
+    <div class="payment-section">
+      <h3>Pay via UPI</h3>
+      <p>Scan the QR code below for payment</p>
+      <!-- Upload your QR code image to /img and rename it payment_qr.png -->
+      <img src="img/payment_qr.png" alt="UPI QR Code">
+      <p>(UPI payment accepted)</p>
+    </div>
+  </section>
+
+  <!-- Footer Placeholder -->
   <div id="footer"></div>
 
-  <!-- Fetch java script-->
-  <script src="js/headerfooter.js"></script>
-  
-  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-    <i class="fas fa-moon"></i>
-  </button>
-
-  <script>
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = themeToggle.querySelector('i');
-    
-    function setTheme(theme) {
-      document.documentElement.classList.toggle('dark-mode', theme === 'dark');
-      localStorage.setItem('theme', theme);
-      themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-      themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-    }
-    
-    // Check saved theme or prefer color scheme
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      setTheme(systemPrefersDark ? 'dark' : 'light');
-    }
-    
-    themeToggle.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.contains('dark-mode');
-      setTheme(isDark ? 'light' : 'dark');
-    });
-    
-    // Watch for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem('theme')) {
-        setTheme(e.matches ? 'dark' : 'light');
-      }
-    });
-
-    // Include external HTML files
-    document.addEventListener('DOMContentLoaded', function() {
-      const includeElements = document.querySelectorAll('[data-include]');
-      
-      includeElements.forEach(element => {
-        const file = element.getAttribute('data-include');
-        
-        if (file) {
-          fetch(file)
-            .then(response => response.text())
-            .then(data => {
-              element.innerHTML = data;
-            })
-            .catch(error => {
-              console.error('Error loading include file:', error);
-            });
-        }
-      });
-    });
-  </script>
 </body>
 </html>
