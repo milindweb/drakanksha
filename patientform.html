@@ -9,65 +9,70 @@
     font-family: Arial, sans-serif;
     background: #f4f7f8;
     margin: 0;
-    padding: 20px;
+    padding: 10px;
   }
   form {
-    max-width: 850px;
+    max-width: 800px;
     margin: auto;
     background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
   h2 {
     text-align: center;
     color: #2c3e50;
-    margin-bottom: 20px;
+    margin: 10px 0 15px;
+    font-size: 20px;
   }
   .row {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 8px;
   }
   .field {
     flex: 1;
-    min-width: 180px;
+    min-width: 160px;
   }
   label {
     display: block;
+    font-size: 13px;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+    color: #333;
   }
   input, select, textarea {
     width: 100%;
-    padding: 8px;
+    padding: 6px 8px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+    border-radius: 4px;
+    font-size: 13px;
   }
   textarea {
     resize: vertical;
+    min-height: 40px;
   }
   button {
     background: #27ae60;
     color: white;
     border: none;
-    padding: 12px 25px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 4px;
     cursor: pointer;
     display: block;
-    margin: 20px auto;
-    font-size: 16px;
+    margin: 15px auto;
+    font-size: 14px;
   }
   button:hover {
     background: #2ecc71;
   }
   .alert {
-    padding: 10px;
-    border-radius: 5px;
+    padding: 8px;
+    border-radius: 4px;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 10px;
+    font-size: 13px;
   }
   .success {
     background: #dff0d8;
@@ -85,13 +90,11 @@
 
 <form id="patientForm">
 
-  <!-- OPD No removed: now auto-generated on backend -->
-  
-  <!-- Compulsory fields start here -->
+  <!-- Compulsory Fields -->
   <div class="row">
     <div class="field">
       <label>Mobile No</label>
-      <input name="mobileNo" required pattern="[6-9][0-9]{9}" title="Enter valid 10-digit number">
+      <input name="mobileNo" type="number" title="Enter valid 10-digit number">
     </div>
     <div class="field">
       <label>Patient Name</label>
@@ -114,7 +117,6 @@
       <input name="age" type="number" required>
     </div>
     <div class="field">
-      <!-- Doctor Name Dropdown -->
       <label>Doctor Name</label>
       <select name="doctorName" required>
         <option value="">Select Doctor</option>
@@ -127,7 +129,6 @@
 
   <div class="row">
     <div class="field">
-      <!-- Department Dropdown -->
       <label>Department</label>
       <select name="department" required>
         <option value="">Select Department</option>
@@ -156,9 +157,8 @@
       </select>
     </div>
   </div>
-  <!-- Compulsory fields end here -->
 
-  <!-- Optional fields below this line -->
+  <!-- Optional Fields -->
   <div class="row">
     <div class="field"><label>Symptoms</label><input name="symptoms"></div>
     <div class="field"><label>Weight</label><input name="weight"></div>
