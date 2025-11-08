@@ -192,9 +192,9 @@ background: linear-gradient(90deg, #3b82f6, #8b5cf6);
 
 .hf-footer-grid {
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+grid-template-columns: repeat(3, 1fr);
 gap: 14px;
-max-width: 1200px;
+max-width: 1100px;
 margin: 0 auto 10px;
 }
 
@@ -293,7 +293,7 @@ align-items: center;
 gap: 10px;
 flex-wrap: nowrap;
 margin: 5px auto 0px;
-max-width: 500px;
+max-width: fit-content;
 }
 
 .hf-social-icon {
