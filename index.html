@@ -5,33 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clinic | Online & In-Person Consultations</title>
   <link rel="icon" type="image/png" href="img/favicon.png" />
-  
-  <!-- Header + Footer CSS -->
   <link rel="stylesheet" href="css/headerfooter.css" />
-  
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  
-  <!-- JS to load header/footer -->
   <script src="js/headerfooter.js" defer></script>
-  
+
   <style>
-    /* RESET */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
 
     body {
       font-family: 'Inter', 'Segoe UI', sans-serif;
       background: #f8fafc;
       color: #1e293b;
+      line-height: 1.7;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      line-height: 1.7;
-      scroll-behavior: smooth;
     }
 
     main { flex: 1; }
@@ -41,36 +29,23 @@
       text-align: center;
       padding: 6rem 2rem 5rem;
       background: linear-gradient(135deg, #e0f2fe, #f9fafb);
-      overflow: hidden;
       position: relative;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: -80px;
-      right: -100px;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle at center, rgba(59,130,246,0.15), transparent 70%);
-      border-radius: 50%;
-      animation: float 8s ease-in-out infinite;
+      overflow: hidden;
     }
 
     .hero h1 {
       font-size: 3rem;
       font-weight: 800;
-      color: #1e40af;
+      color: #1e3a8a;
       margin-bottom: 1rem;
       animation: fadeInUp 0.8s ease;
     }
 
     .hero .subtitle {
-      max-width: 750px;
+      max-width: 720px;
       margin: 0 auto 2.5rem;
       color: #475569;
       font-size: 1.15rem;
-      animation: fadeInUp 1s ease;
     }
 
     .hero-badges {
@@ -89,42 +64,29 @@
       transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    .badge:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    }
-
-    .badge i {
-      color: #3b82f6;
-      font-size: 1.8rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .badge span {
-      font-weight: 600;
-      color: #1e293b;
-    }
+    .badge:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    .badge i { color: #3b82f6; font-size: 1.8rem; margin-bottom: 0.3rem; }
+    .badge span { font-weight: 600; color: #1e293b; }
 
     /* ===== SERVICES ===== */
     .services {
+      background: #ffffff;
       padding: 5rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      text-align: center;
     }
 
     .section-title {
-      text-align: center;
       font-size: 2.4rem;
       font-weight: 700;
+      color: #1e40af;
       margin-bottom: 3rem;
-      color: #1e3a8a;
       position: relative;
     }
 
     .section-title::after {
       content: '';
-      width: 70px;
-      height: 3px;
+      width: 80px;
+      height: 4px;
       background: #3b82f6;
       display: block;
       margin: 1rem auto 0;
@@ -135,23 +97,23 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
     }
 
     .service-card {
-      background: #ffffff;
+      background: #f9fafb;
       border: 1px solid #e2e8f0;
       border-radius: 16px;
       padding: 2rem;
-      text-align: left;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
       transition: all 0.3s ease;
-      animation: fadeInUp 0.8s ease;
     }
 
     .service-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 8px 30px rgba(59,130,246,0.15);
-      border-color: #93c5fd;
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px rgba(59,130,246,0.15);
+      border-color: #bfdbfe;
     }
 
     .service-icon {
@@ -163,13 +125,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.7rem;
-      margin-bottom: 1.2rem;
-      transition: transform 0.3s ease;
-    }
-
-    .service-card:hover .service-icon {
-      transform: scale(1.1);
+      font-size: 1.8rem;
+      margin: 0 auto 1.2rem;
     }
 
     .service-card h3 {
@@ -178,9 +135,7 @@
       margin-bottom: 0.8rem;
     }
 
-    .service-card p {
-      color: #475569;
-    }
+    .service-card p { color: #475569; }
 
     /* ===== BOOKING ===== */
     .booking-section {
@@ -205,11 +160,7 @@
       margin-bottom: 1rem;
     }
 
-    .booking-info p {
-      color: #475569;
-      margin-bottom: 1rem;
-      font-size: 1.05rem;
-    }
+    .booking-info p { color: #475569; margin-bottom: 1rem; }
 
     .fee-highlight {
       background: linear-gradient(135deg, #3b82f6, #60a5fa);
@@ -224,79 +175,60 @@
       animation: pulse 2s infinite ease-in-out;
     }
 
+    /* WhatsApp Button Centered */
     .booking-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 1.5rem;
+      text-align: center;
+      margin-top: 2rem;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.7rem;
-      background: #3b82f6;
+      gap: 0.8rem;
+      background: #25d366;
       color: white;
-      padding: 0.9rem 1.8rem;
+      padding: 1rem 2rem;
       border-radius: 12px;
       font-weight: 600;
       text-decoration: none;
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255,255,255,0.3);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.5s, height 0.5s;
-    }
-
-    .btn:hover::before {
-      width: 250px;
-      height: 250px;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 15px rgba(37,211,102,0.3);
     }
 
     .btn:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(59,130,246,0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(37,211,102,0.5);
     }
+
+    .btn i { font-size: 1.3rem; }
 
     .payment-card {
       background: #ffffff;
       padding: 2.5rem;
       border-radius: 18px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      text-align: center;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.06);
       border: 1px solid #e2e8f0;
+      text-align: center;
     }
 
     .payment-card h3 {
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       color: #1e293b;
       margin-bottom: 1.2rem;
     }
 
     .qr-container {
       background: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #dbeafe;
       border-radius: 12px;
       padding: 1.2rem;
       margin-bottom: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(59,130,246,0.1);
       transition: transform 0.3s ease;
     }
 
-    .qr-container:hover {
-      transform: scale(1.05);
-    }
+    .qr-container:hover { transform: scale(1.05); }
 
     .qr-container img {
       width: 200px;
@@ -304,15 +236,15 @@
     }
 
     .payment-note {
-      font-size: 0.9rem;
-      color: #64748b;
+      font-size: 1rem;
+      color: #334155;
+      font-weight: 500;
     }
 
     /* ===== FEATURES ===== */
     .features {
+      background: #ffffff;
       padding: 5rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
       text-align: center;
     }
 
@@ -320,11 +252,12 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 2rem;
-      margin-top: 3rem;
+      max-width: 1100px;
+      margin: 3rem auto 0;
     }
 
     .feature {
-      background: #ffffff;
+      background: #f8fafc;
       border: 1px solid #e2e8f0;
       padding: 2rem;
       border-radius: 16px;
@@ -332,8 +265,8 @@
     }
 
     .feature:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 10px 30px rgba(59,130,246,0.15);
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(59,130,246,0.15);
     }
 
     .feature i {
@@ -348,41 +281,28 @@
       margin-bottom: 0.6rem;
     }
 
-    .feature p {
-      color: #64748b;
-      font-size: 0.95rem;
-    }
+    .feature p { color: #475569; font-size: 0.95rem; }
 
-    /* ===== ANIMATIONS ===== */
+    /* ANIMATIONS */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
-
     @keyframes pulse {
-      0%, 100% { transform: scale(1); }
+      0%,100% { transform: scale(1); }
       50% { transform: scale(1.05); }
     }
 
-    /* ===== RESPONSIVE ===== */
     @media (max-width: 900px) {
-      .booking-container {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-      .booking-info h2 { font-size: 1.8rem; }
+      .booking-container { grid-template-columns: 1fr; }
+      .booking-actions { text-align: center; }
       .hero h1 { font-size: 2.2rem; }
     }
   </style>
 </head>
 
 <body>
-  <!-- Header -->
   <div id="header"></div>
 
   <main>
@@ -390,9 +310,8 @@
     <section class="hero">
       <h1>Professional Medical Consultation</h1>
       <p class="subtitle">
-        Providing trusted, private, and personalized healthcare solutions — available both in-person and online.
+        Trusted and personalized healthcare — available both in-person and online for your convenience.
       </p>
-
       <div class="hero-badges">
         <div class="badge"><i class="fas fa-user-md"></i><span>Expert Doctors</span></div>
         <div class="badge"><i class="fas fa-shield-alt"></i><span>100% Confidential</span></div>
@@ -413,13 +332,13 @@
         <div class="service-card">
           <div class="service-icon"><i class="fas fa-laptop-medical"></i></div>
           <h3>Online Consultation</h3>
-          <p>Connect securely with our professionals from anywhere via WhatsApp video consultation.</p>
+          <p>Connect securely with our medical professionals from anywhere via WhatsApp video consultation.</p>
         </div>
 
         <div class="service-card">
           <div class="service-icon"><i class="fas fa-prescription"></i></div>
-          <h3>Prescriptions & Follow-ups</h3>
-          <p>Instant digital prescriptions and convenient follow-ups for ongoing care.</p>
+          <h3>Prescription & Follow-up</h3>
+          <p>Instant e-prescriptions and easy follow-ups for ongoing care and monitoring.</p>
         </div>
       </div>
     </section>
@@ -431,7 +350,7 @@
           <h2>Book Your Appointment</h2>
           <p>Schedule your consultation with our experienced doctors — flexible timings and personalized care.</p>
           <p>Please complete payment before your appointment to confirm your booking.</p>
-          
+
           <div class="fee-highlight">
             <i class="fas fa-rupee-sign"></i><span>Consultation Fee: ₹500</span>
           </div>
@@ -450,7 +369,8 @@
             <img src="img/payment_qr.png" alt="UPI Payment QR Code" />
           </div>
           <p class="payment-note">
-            Scan the QR code to pay ₹500 securely via UPI. Your payment confirms your appointment.
+            Scan this QR to pay <strong>₹500</strong> securely via UPI.  
+            Your payment confirms your appointment.
           </p>
         </div>
       </div>
@@ -460,15 +380,14 @@
     <section class="features">
       <h2 class="section-title">Why Choose Us</h2>
       <div class="features-grid">
-        <div class="feature"><i class="fas fa-certificate"></i><h4>Certified Professionals</h4><p>Experienced and qualified medical experts</p></div>
-        <div class="feature"><i class="fas fa-lock"></i><h4>Privacy Guaranteed</h4><p>Your health data remains confidential</p></div>
+        <div class="feature"><i class="fas fa-certificate"></i><h4>Certified Professionals</h4><p>Experienced and qualified experts</p></div>
+        <div class="feature"><i class="fas fa-lock"></i><h4>Privacy Guaranteed</h4><p>Your data is fully confidential</p></div>
         <div class="feature"><i class="fas fa-hand-holding-medical"></i><h4>Personalized Care</h4><p>Treatment tailored to your needs</p></div>
-        <div class="feature"><i class="fas fa-headset"></i><h4>24/7 Support</h4><p>Get help whenever you need it</p></div>
+        <div class="feature"><i class="fas fa-headset"></i><h4>24/7 Support</h4><p>Assistance whenever you need</p></div>
       </div>
     </section>
   </main>
 
-  <!-- FOOTER -->
   <div id="footer"></div>
 </body>
 </html>
