@@ -168,48 +168,63 @@ body {
 
 /* ===== Compact Footer Tweaks ===== */
 
-/* Reduce overall footer height */
+
+/* ===== Compact Version (Keep Design Intact) ===== */
+
 .hf-footer {
-  padding: 10px 10px 5px !important;  /* reduced vertical padding */
+  padding: 20px 15px 15px !important; /* was 40px 20px 25px */
 }
 
-/* Remove extra grid spacing */
 .hf-footer-grid {
-  margin: 0 auto 10px !important;
-  gap: 10px !important;
+  gap: 15px !important; /* was 25px */
+  margin: 0 auto 10px !important; /* reduced bottom space */
 }
 
-/* Remove Connect or any headings in social section */
+/* Keep h3 visible but tighter spacing */
 .hf-footer-col h3 {
-  display: none !important;
+  margin-bottom: 10px !important; /* was 18px */
+  padding-bottom: 4px !important; /* was 8px */
 }
 
-/* Compact social icons area */
+/* Contact Info & Links spacing tightened */
+.hf-contact-info li {
+  margin-bottom: 8px !important; /* was 14px */
+}
+
+.hf-footer-links li {
+  margin-bottom: 6px !important; /* was 10px */
+}
+
+/* Social Icons area – same look, tighter layout */
 .hf-social-icons {
-  margin: 5px auto !important;
-  gap: 8px !important;
+  margin: 8px auto 10px !important; /* was 20px auto 25px */
+  gap: 10px !important; /* was 14px */
 }
 
 .hf-social-icon {
-  width: 34px !important;
-  height: 34px !important;
-  font-size: 0.95rem !important;
-  border-radius: 8px !important;
-  padding: 0 !important;
+  width: 38px !important; /* slightly smaller but still balanced */
+  height: 38px !important;
+  border-radius: 10px !important; /* keeps smooth rounded shape */
+  font-size: 1rem !important;
 }
 
-/* Tighten footer bottom area */
+/* Footer bottom – reduced vertical padding */
 .hf-footer-bottom {
-  padding: 6px 0 0 !important;
+  padding: 8px 0 0 !important; /* was 20px 0 0 */
 }
 
-/* Reduce vertical spacing between items */
-.hf-contact-info li,
-.hf-footer-links li {
-  margin-bottom: 6px !important;
-}
-
-/* Reduce line spacing globally inside footer */
+/* Slightly tighter line height across footer text */
 .hf-footer * {
-  line-height: 1.2 !important;
+  line-height: 1.3 !important;
 }
+
+/* Responsive fix for small screens */
+@media (max-width: 768px) {
+  .hf-footer-grid {
+    gap: 18px !important;
+  }
+  .hf-footer-col {
+    padding-bottom: 10px !important;
+  }
+}
+
