@@ -1,53 +1,53 @@
-// ===========================
-// Header Mobile Menu Toggle
-// ===========================
-const mobileToggle = document.querySelector('.hf-mobile-toggle');
-const mobileMenu = document.querySelector('.hf-mobile-menu');
-const overlay = document.querySelector('.hf-mobile-overlay');
+// ===================================================
+// Dynamically load HEADER and FOOTER
+// ===================================================
+document.addEventListener("DOMContentLoaded", () => {
 
-if (mobileToggle) {
-  mobileToggle.addEventListener('click', () => {
-    mobileMenu.classList.toggle('active');
-    overlay.classList.toggle('active');
-  });
-}
+  // Load Header
+  fetch("header.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("header").innerHTML = html;
+      initHeaderFunctions(); // enable menu toggle after header loads
+    })
+    .catch(err => console.error("Header load failed:", err));
 
-if (overlay) {
-  overlay.addEventListener('click', () => {
-    mobileMenu.classList.remove('active');
-    overlay.classList.remove('active');
-  });
-}
-
-document.querySelectorAll('.hf-mobile-nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    mobileMenu.classList.remove('active');
-    overlay.classList.remove('active');
-  });
+  // Load Footer
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("footer").innerHTML = html;
+    })
+    .catch(err => console.error("Footer load failed:", err));
 });
 
-// ===========================
-// Optional Smooth Scroll (for CONTACT, INFO, ABOUT anchors)
-// ===========================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      window.scrollTo({
-        top: target.offsetTop - 60,
-        behavior: 'smooth'
-      });
-    }
-  });
-});
 
-// ===========================
-// Footer Year Auto Update
-// ===========================
-document.addEventListener('DOMContentLoaded', () => {
-  const yearSpan = document.querySelector('.hf-year');
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
+// ===================================================
+// Header Menu Toggle for Mobile
+// ===================================================
+function initHeaderFunctions() {
+  const mobileToggle = document.querySelector('.hf-mobile-toggle');
+  const mobileMenu = document.querySelector('.hf-mobile-menu');
+  const overlay = document.querySelector('.hf-mobile-overlay');
+
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('active');
+      overlay.classList.toggle('active');
+    });
   }
-});
+
+  if (overlay) {
+    overlay.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+  }
+
+  document.querySelectorAll('.hf-mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+  });
+}
