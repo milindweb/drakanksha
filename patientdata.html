@@ -18,7 +18,7 @@
     background-color: #1f1f1f;
     color: #fff;
     text-align: center;
-    padding: 10px 0;
+    padding: 12px 0;
     font-weight: bold;
     letter-spacing: 0.5px;
   }
@@ -29,31 +29,48 @@
 
   h2 {
     text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .search-container {
+    text-align: center;
+    margin: 10px 0 20px;
+  }
+
+  .search-container input {
+    width: 60%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background: #1c1c1c;
     color: #fff;
+    font-size: 15px;
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
     background: #1e1e1e;
     border-radius: 8px;
     overflow: hidden;
   }
 
   th, td {
-    padding: 10px;
+    padding: 8px 10px;
     border-bottom: 1px solid #333;
     text-align: left;
+    font-size: 14px;
   }
 
   th {
     background-color: #272727;
     color: #00e0ff;
+    position: sticky;
+    top: 0;
   }
 
   tr:hover {
-    background-color: #2e2e2e;
+    background-color: #2b2b2b;
   }
 
   td[contenteditable="true"] {
@@ -62,12 +79,18 @@
     cursor: text;
   }
 
+  .btn-container {
+    text-align: center;
+    margin-top: 15px;
+  }
+
   button {
     background-color: #00bcd4;
     color: #fff;
     border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 14px;
     cursor: pointer;
     transition: background 0.3s;
   }
@@ -76,50 +99,84 @@
     background-color: #0097a7;
   }
 
-  .btn-container {
-    text-align: center;
-    margin-top: 10px;
-  }
-
   .loading {
     text-align: center;
     color: #aaa;
     margin-top: 20px;
   }
 
+  .highlight {
+    background-color: #333;
+    color: #00e0ff;
+  }
+
+  .suggestions {
+    background: #1c1c1c;
+    color: #fff;
+    width: 60%;
+    margin: 0 auto;
+    border: 1px solid #333;
+    border-radius: 4px;
+    text-align: left;
+    position: absolute;
+    z-index: 10;
+  }
+
+  .suggestions div {
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+
+  .suggestions div:hover {
+    background-color: #333;
+  }
+
+  footer {
+    margin-top: 30px;
+    font-size: 13px;
+    color: #888;
+  }
 </style>
 </head>
 <body>
-<header>
-  🏥 Patient Data Management System
-</header>
+
+<header>🏥 Patient Data Management System</header>
 
 <main>
   <h2>All Patient Records</h2>
-  <div id="loading" class="loading">Fetching data from Google Sheet...</div>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="🔍 Search by patient name, mobile, or OPD No...">
+    <div id="suggestionBox" class="suggestions" style="display:none;"></div>
+  </div>
+
+  <div id="loading" class="loading">Loading patient data...</div>
+
   <table id="patientTable" style="display:none;">
     <thead id="tableHead"></thead>
     <tbody id="tableBody"></tbody>
   </table>
+
   <div class="btn-container">
     <button onclick="saveChanges()">💾 Save Changes</button>
+    <button onclick="fetchData()">🔄 Refresh</button>
   </div>
 </main>
 
-<footer>
-  © 2025 My Clinic — All Rights Reserved
-</footer>
+<footer>© 2025 My Clinic — All Rights Reserved</footer>
 
 <script>
   const webAppURL = "https://script.google.com/macros/s/AKfycbwgRNLtac8jSFw8a9DTAwHaHMx8kgu4Ba7JhpTUgee1WfOK00zYIJ-zQIgG0TY1UuY37A/exec";
   let sheetData = [];
+  let headers = [];
 
   async function fetchData() {
+    document.getElementById("loading").textContent = "Fetching data from Google Sheet...";
+    document.getElementById("patientTable").style.display = "none";
     try {
       const res = await fetch(webAppURL + "?action=read");
-      const data = await res.json();
-      sheetData = data;
-      displayTable(data);
+      sheetData = await res.json();
+      displayTable(sheetData);
     } catch (err) {
       document.getElementById('loading').textContent = "⚠️ Error fetching data.";
       console.error(err);
@@ -132,23 +189,64 @@
       return;
     }
 
+    headers = Object.keys(data[0]);
     const tableHead = document.getElementById("tableHead");
     const tableBody = document.getElementById("tableBody");
-    const keys = Object.keys(data[0]);
 
-    // Header
-    tableHead.innerHTML = "<tr>" + keys.map(k => `<th>${k}</th>`).join('') + "</tr>";
+    // Table header
+    tableHead.innerHTML = "<tr>" + headers.map(h => `<th>${h}</th>`).join('') + "</tr>";
 
-    // Body
+    // Table body
     tableBody.innerHTML = data.map((row, i) => {
-      return `<tr>${keys.map(k => 
-        `<td contenteditable="true" data-row="${i}" data-key="${k}">${row[k]}</td>`
+      return `<tr>${headers.map(h => 
+        `<td contenteditable="true" data-row="${i}" data-key="${h}">${row[h] ?? ""}</td>`
       ).join('')}</tr>`;
     }).join('');
 
     document.getElementById("loading").style.display = "none";
     document.getElementById("patientTable").style.display = "table";
   }
+
+  // 🔍 Search with live suggestions
+  const searchInput = document.getElementById("searchInput");
+  const suggestionBox = document.getElementById("suggestionBox");
+
+  searchInput.addEventListener("input", function() {
+    const query = this.value.toLowerCase();
+    if (!query.trim()) {
+      suggestionBox.style.display = "none";
+      displayTable(sheetData);
+      return;
+    }
+
+    const matches = sheetData.filter(row =>
+      Object.values(row).some(v => String(v).toLowerCase().includes(query))
+    );
+
+    // Suggestion list
+    const uniqueSuggestions = [...new Set(matches.map(r => r.patientName || r.PatientName || ""))].filter(Boolean);
+    if (uniqueSuggestions.length) {
+      suggestionBox.innerHTML = uniqueSuggestions.slice(0, 10).map(name => `<div>${name}</div>`).join('');
+      suggestionBox.style.display = "block";
+    } else {
+      suggestionBox.style.display = "none";
+    }
+
+    // Filter table
+    displayTable(matches);
+  });
+
+  // When user clicks suggestion
+  suggestionBox.addEventListener("click", e => {
+    if (e.target.tagName === "DIV") {
+      searchInput.value = e.target.textContent;
+      suggestionBox.style.display = "none";
+      const match = sheetData.filter(row =>
+        String(row.patientName || row.PatientName || "").toLowerCase().includes(searchInput.value.toLowerCase())
+      );
+      displayTable(match);
+    }
+  });
 
   async function saveChanges() {
     const updatedData = [];
@@ -172,12 +270,14 @@
       });
       const result = await res.json();
       alert(result.message || "✅ Data updated successfully!");
+      fetchData();
     } catch (err) {
       alert("⚠️ Failed to save changes.");
       console.error(err);
     }
   }
 
+  // Initial load
   fetchData();
 </script>
 </body>
