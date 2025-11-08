@@ -1,243 +1,297 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome | Milindweb Clinic</title>
-  <link rel="icon" type="image/png" href="img/favicon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clinic | Online & In-Person Consultations</title>
+  <link rel="icon" type="image/png" href="img/favicon.png" />
 
   <!-- Header + Footer CSS -->
-  <link rel="stylesheet" href="css/headerfooter.css">
+  <link rel="stylesheet" href="css/headerfooter.css" />
 
-  <!-- Font Awesome (for icons in footer & cards) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Font Awesome (for icons) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 
   <!-- JS to load header/footer -->
   <script src="js/headerfooter.js" defer></script>
 
   <style>
     :root {
-      --primary: #27ae60;
-      --accent: #2c3e50;
-      --light-bg: #f7faff;
-      --text-dark: #222;
-      --shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      --primary: #3b82f6;
+      --accent: #60a5fa;
+      --dark-bg: #0f172a;
+      --light-text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #1e293b;
     }
 
     body {
-      font-family: "Poppins", sans-serif;
-      background: var(--light-bg);
-      color: var(--text-dark);
-      overflow-x: hidden;
+      background: var(--dark-bg);
+      color: var(--light-text);
+      font-family: "Segoe UI", system-ui, sans-serif;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      line-height: 1.6;
     }
 
     /* ===== HERO SECTION ===== */
     .hero {
+      padding: 4rem 2rem;
       text-align: center;
-      background: linear-gradient(135deg, #27ae60, #2ecc71);
-      color: white;
-      padding: 4rem 1.5rem;
-      animation: fadeInDown 1.2s ease;
+      background: radial-gradient(circle at 20% 20%, #1e293b, #0f172a);
+      border-bottom: 1px solid var(--border);
+      animation: fadeIn 1.2s ease;
     }
 
     .hero h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 0.8rem;
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
     }
 
     .hero p {
       font-size: 1.1rem;
-      opacity: 0.9;
+      color: var(--muted);
     }
 
-    /* ===== SECTION GENERAL ===== */
-    section {
-      max-width: 1100px;
-      margin: 3rem auto;
-      padding: 0 1.5rem;
+    /* ===== INFO SECTION ===== */
+    .info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1.2rem;
+      padding: 3rem 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+      animation: fadeUp 1.2s ease;
+    }
+
+    .info h2 {
+      font-size: 1.8rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .info p {
+      color: var(--light-text);
+      max-width: 700px;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ===== BOOKING SECTION ===== */
+    .booking {
+      background: #1e293b;
+      padding: 3rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      margin: 2rem auto;
+      max-width: 1000px;
       animation: fadeIn 1.2s ease;
     }
 
-    section h2 {
-      text-align: center;
+    .booking-text {
+      flex: 1 1 360px;
+    }
+
+    .booking-text h3 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
       color: var(--accent);
-      margin-bottom: 1.8rem;
-      font-size: 1.8rem;
     }
 
-    /* ===== CARD GRID ===== */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .card {
-      background: #fff;
-      padding: 1.8rem;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      animation: slideUp 1s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .card i {
-      font-size: 2rem;
-      color: var(--primary);
+    .booking-text p {
+      color: var(--light-text);
       margin-bottom: 1rem;
     }
 
-    .card h3 {
-      margin-bottom: 0.5rem;
-      color: var(--accent);
+    .fee {
+      color: var(--muted);
+      font-style: italic;
     }
 
-    /* ===== CTA / APPOINTMENT SECTION ===== */
-    .cta {
+    .booking-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       background: var(--primary);
       color: white;
+      text-decoration: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+
+    .btn i {
+      font-size: 1.1rem;
+    }
+
+    .btn:hover {
+      background: var(--accent);
+    }
+
+    /* ===== QR PAYMENT SECTION ===== */
+    .payment {
+      text-align: center;
+      margin-top: 1rem;
+      flex: 0 1 240px;
+    }
+
+    .payment h4 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .payment img {
+      width: 180px;
+      height: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+      margin-bottom: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .payment img:hover {
+      transform: scale(1.05);
+    }
+
+    .payment p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* ===== ONLINE CONSULTATION ===== */
+    .online {
       text-align: center;
       padding: 3rem 1rem;
-      border-radius: 12px;
-      margin: 3rem 1.5rem;
-      animation: fadeInUp 1.2s ease;
+      animation: fadeUp 1.4s ease;
     }
 
-    .cta h2 {
-      color: white;
-      margin-bottom: 0.5rem;
-    }
-
-    .cta p {
-      margin-bottom: 1rem;
-      opacity: 0.9;
-    }
-
-    .cta a.btn {
-      display: inline-block;
-      background: white;
-      color: var(--primary);
-      padding: 0.8rem 1.4rem;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .cta a.btn:hover {
-      background: var(--accent);
-      color: white;
-    }
-
-    /* ===== CONTACT SHORT SECTION ===== */
-    .contact-short {
-      text-align: center;
-      margin: 2rem auto 4rem;
+    .online h2 {
       color: var(--accent);
-      animation: fadeIn 1.5s ease;
+      margin-bottom: 0.6rem;
     }
 
-    .contact-short i {
-      color: var(--primary);
-      margin-right: 0.5rem;
+    .online p {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--light-text);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      .booking {
+        flex-direction: column;
+        text-align: center;
+      }
+      .booking-actions {
+        justify-content: center;
+      }
     }
 
     /* ===== ANIMATIONS ===== */
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes fadeInUp {
+    @keyframes fadeUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 600px) {
-      .hero h1 { font-size: 1.8rem; }
-      .cta h2 { font-size: 1.4rem; }
     }
   </style>
 </head>
 
 <body>
-
-  <!-- Header Placeholder (auto-loaded) -->
+  <!-- Header (auto loaded) -->
   <div id="header"></div>
 
-  <!-- ===== HERO ===== -->
+  <!-- HERO -->
   <section class="hero">
-    <h1>Welcome to Milindweb Clinic</h1>
-    <p>Personalized Healthcare | Digital Health Records | Online Consultations</p>
+    <h1>Professional Medical Consultation</h1>
+    <p>Providing trusted, private and personalized healthcare — in person or online.</p>
   </section>
 
-  <!-- ===== OUR SERVICES ===== -->
-  <section>
-    <h2>Our Services</h2>
-    <div class="card-grid">
-      <div class="card">
-        <i class="fa-solid fa-user-md"></i>
-        <h3>General Consultation</h3>
-        <p>Comprehensive health consultations tailored to each patient’s needs.</p>
+  <!-- INFO SECTION -->
+  <section class="info">
+    <h2>Welcome</h2>
+    <p>
+      We provide comprehensive healthcare consultations with personalized treatment plans.
+      Book an appointment for a general checkup or online consultation.
+    </p>
+    <p class="highlight">Your health is our priority.</p>
+  </section>
+
+  <!-- BOOKING + PAYMENT SECTION -->
+  <section class="booking">
+    <div class="booking-text">
+      <h3>Book Your Appointment</h3>
+      <p>
+        Please confirm your booking by paying the consultation fee of <strong>₹500</strong>
+        before your appointment. Use the QR code to pay securely via UPI.
+      </p>
+      <p class="fee">Consultation Fee: ₹500 (Pay First)</p>
+
+      <div class="booking-actions">
+        <a
+          href="https://wa.me/919869787575?text=Hello%2C%20I%20would%20like%20to%20book%20an%20appointment."
+          class="btn"
+          target="_blank"
+          ><i class="fa-brands fa-whatsapp"></i> Book via WhatsApp</a
+        >
+        <a
+          href="https://t.me/itsmakk"
+          class="btn"
+          target="_blank"
+          ><i class="fa-brands fa-telegram"></i> Book via Telegram</a
+        >
       </div>
-      <div class="card">
-        <i class="fa-solid fa-stethoscope"></i>
-        <h3>Health Checkups</h3>
-        <p>Early detection and preventive screening to maintain wellness.</p>
-      </div>
-      <div class="card">
-        <i class="fa-solid fa-laptop-medical"></i>
-        <h3>Online Consultations</h3>
-        <p>Connect with your doctor remotely using secure online sessions.</p>
-      </div>
-      <div class="card">
-        <i class="fa-solid fa-file-medical"></i>
-        <h3>Digital Records</h3>
-        <p>Easy and secure management of your health and lab reports online.</p>
-      </div>
+    </div>
+
+    <div class="payment">
+      <h4>Pay via UPI</h4>
+      <img src="img/payment_qr.png" alt="UPI QR Code" />
+      <p>Scan this QR to pay ₹500 securely before consultation.</p>
     </div>
   </section>
 
-  <!-- ===== CTA SECTION ===== -->
-  <section class="cta">
-    <h2>Book Your Appointment Today</h2>
-    <p>Quick and easy booking through WhatsApp or Telegram.</p>
-    <a href="https://wa.me/919869787575?text=Hello%20Doctor%2C%20I%20would%20like%20to%20book%20an%20appointment."
-       target="_blank" class="btn">
-       <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
-    </a>
+  <!-- ONLINE CONSULTATION SECTION -->
+  <section class="online">
+    <h2>Online Consultation</h2>
+    <p>
+      For patients unable to visit the clinic physically, online consultations are available through
+      WhatsApp or Telegram. After confirming your payment, our medical team will share a secure consultation link.
+    </p>
   </section>
 
-  <!-- ===== CONTACT SHORT ===== -->
-  <section class="contact-short">
-    <p><i class="fa-solid fa-location-dot"></i> Uran, Navi Mumbai & Nanded, Maharashtra</p>
-    <p><i class="fa-solid fa-phone"></i> +91 9869787575</p>
-  </section>
-
-  <!-- Footer Placeholder (auto-loaded) -->
+  <!-- Footer (auto loaded) -->
   <div id="footer"></div>
-
 </body>
 </html>
