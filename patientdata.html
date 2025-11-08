@@ -5,22 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Milindweb - Patient Data Management</title>
 
-<!-- FontAwesome + Libraries -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
-<!-- Header/Footer -->
 <link rel="stylesheet" href="css/headerfooter.css">
 <script src="js/headerfooter.js" defer></script>
 
 <style>
+  :root {
+    --primary: #0d47a1;
+    --accent: #2196f3;
+    --dark-bg: #121212;
+    --dark-card: #1e1e1e;
+    --dark-header: #242424;
+    --text: #e0e0e0;
+    --muted: #999;
+  }
+
   body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #f4f7fb;
-    color: #333;
+    background-color: var(--dark-bg);
+    color: var(--text);
     margin: 0;
     padding: 0;
   }
@@ -32,35 +40,32 @@
   }
 
   .page-header {
+    background: var(--dark-card);
     text-align: center;
-    background: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     margin-bottom: 30px;
   }
 
   .page-header h2 {
-    color: #1a3a5f;
-    font-size: 2.1rem;
+    color: var(--accent);
   }
 
   .page-header p {
-    color: #666;
-    margin-top: 10px;
+    color: var(--muted);
   }
 
   .table-section {
-    background: white;
+    background: var(--dark-card);
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
   }
 
   .table-header {
-    padding: 20px;
-    background: linear-gradient(to right, #1a3a5f, #2a5a8c);
-    color: #fff;
+    padding: 15px 20px;
+    background: var(--dark-header);
+    color: var(--text);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -68,20 +73,14 @@
     gap: 15px;
   }
 
-  .table-header h3 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
   .info-box {
-    background-color: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    padding: 10px 15px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.9rem;
   }
 
   .export-buttons {
@@ -93,53 +92,85 @@
     padding: 8px 15px;
     border: none;
     border-radius: 4px;
-    color: white;
-    font-weight: 500;
     cursor: pointer;
+    font-weight: 500;
+    color: white;
   }
 
-  .export-excel { background: #1d6f42; }
-  .export-pdf { background: #d32f2f; }
-  .export-excel:hover { background: #165834; }
-  .export-pdf:hover { background: #b71c1c; }
+  .export-excel { background: #2e7d32; }
+  .export-excel:hover { background: #1b5e20; }
+  .export-pdf { background: #c62828; }
+  .export-pdf:hover { background: #8e0000; }
 
   .table-container {
     overflow: auto;
-    max-height: 70vh;
+    max-height: 75vh;
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.9rem;
+    color: var(--text);
+    font-size: 0.85rem;
   }
 
   th {
-    background-color: #1a3a5f;
+    background: var(--primary);
     color: #fff;
     padding: 10px;
     position: sticky;
     top: 0;
+    cursor: pointer;
     text-align: left;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    white-space: nowrap;
+  }
+
+  th:hover {
+    background: #1565c0;
   }
 
   td {
     padding: 8px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #333;
   }
 
   tr:nth-child(even) {
-    background: #f8f9fa;
+    background: #1a1a1a;
   }
 
   tr:hover {
-    background-color: #e8f4ff;
+    background: #2a2a2a;
   }
 
-  .loading {
-    text-align: center;
-    padding: 40px;
-    color: #777;
+  .filter-dropdown {
+    position: absolute;
+    background: #1f1f1f;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    padding: 10px;
+    z-index: 100;
+    max-height: 250px;
+    overflow-y: auto;
+    display: none;
+  }
+
+  .filter-dropdown.active {
+    display: block;
+  }
+
+  .filter-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+  }
+
+  .filter-option label {
+    cursor: pointer;
+    font-size: 0.85rem;
   }
 
   ::-webkit-scrollbar {
@@ -147,28 +178,26 @@
     height: 8px;
   }
   ::-webkit-scrollbar-thumb {
-    background: #b8c2cc;
+    background: #333;
     border-radius: 10px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #2a5a8c;
+    background: #555;
   }
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
 <div id="header"></div>
 
 <div class="patient-container">
   <div class="page-header">
-    <h2><i class="fa-solid fa-user-doctor"></i> Patient Management System</h2>
-    <p>View, search, and export all patient records from your Google Sheet.</p>
+    <h2><i class="fa-solid fa-user-doctor"></i> Patient Data Management</h2>
+    <p>Dark Mode + Filterable view of all patient records</p>
   </div>
 
   <div class="table-section">
     <div class="table-header">
-      <h3><i class="fa-solid fa-table"></i> All Patient Data (Sheet1)</h3>
+      <h3><i class="fa-solid fa-table"></i> All Patient Data</h3>
       <div class="info-box">
         <i class="fa-solid fa-database"></i>
         <span id="patient-count">Loading...</span> records
@@ -184,88 +213,114 @@
     </div>
 
     <div class="table-container" id="table-container">
-      <div class="loading">
-        <div class="loading-spinner"></div>
-        Loading patient data...
-      </div>
+      <div class="loading" style="text-align:center;padding:30px;color:#aaa;">Fetching data...</div>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <div id="footer"></div>
 
 <script>
-const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1L0OqLtzT9X-WlU3HT4H7OSmhsQ1rKYNSwbKO4IcxxWw/export?format=csv&sheet=Sheet1";
-
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/1L0OqLtzT9X-WlU3HT4H7OSmhsQ1rKYNSwbKO4IcxxWw/export?format=csv&sheet=Sheet1";
 let allPatients = [];
+let filteredPatients = [];
+let columnFilters = {};
 
 function init() {
-  loadData();
-}
-
-function loadData() {
-  Papa.parse(GOOGLE_SHEET_CSV_URL, {
+  Papa.parse(SHEET_URL, {
     download: true,
     header: true,
-    complete: function(results) {
-      allPatients = results.data;
+    complete: (res) => {
+      allPatients = res.data;
+      filteredPatients = [...allPatients];
       document.getElementById("patient-count").textContent = allPatients.length;
       renderTable();
-    },
-    error: function(err) {
-      console.error("Error loading:", err);
-      document.getElementById("table-container").innerHTML =
-        '<div class="loading">⚠️ Failed to load data.</div>';
     }
   });
 }
 
 function renderTable() {
-  if (allPatients.length === 0) {
-    document.getElementById("table-container").innerHTML =
-      '<div class="loading">No records found</div>';
+  if (!filteredPatients.length) {
+    document.getElementById("table-container").innerHTML = "<div style='padding:30px;text-align:center;color:#999;'>No records found</div>";
     return;
   }
 
-  const headers = Object.keys(allPatients[0]);
-  let html = `<table><thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>`;
-  
-  allPatients.forEach(row => {
-    html += `<tr>${headers.map(h => `<td>${row[h] || ""}</td>`).join('')}</tr>`;
+  const headers = Object.keys(filteredPatients[0]);
+  let html = `<table><thead><tr>`;
+  headers.forEach(h => {
+    html += `<th data-col="${h}" onclick="toggleFilter('${h}', event)">${h} <i class='fa fa-filter' style='opacity:0.6;'></i></th>`;
   });
-
-  html += "</tbody></table>";
+  html += `</tr></thead><tbody>`;
+  filteredPatients.forEach(r => {
+    html += `<tr>${headers.map(h => `<td>${r[h] || ""}</td>`).join('')}</tr>`;
+  });
+  html += `</tbody></table>`;
   document.getElementById("table-container").innerHTML = html;
 }
 
-// Export to Excel
+function toggleFilter(col, e) {
+  e.stopPropagation();
+  document.querySelectorAll(".filter-dropdown").forEach(f => f.remove());
+
+  const dropdown = document.createElement("div");
+  dropdown.className = "filter-dropdown active";
+  dropdown.innerHTML = `<strong style='font-size:0.85rem;'>Filter by ${col}</strong><br>`;
+
+  const unique = [...new Set(allPatients.map(r => r[col]).filter(v => v))].sort();
+  unique.forEach(v => {
+    const div = document.createElement("div");
+    div.className = "filter-option";
+    div.innerHTML = `<input type='checkbox' value="${v}"> <label>${v}</label>`;
+    dropdown.appendChild(div);
+  });
+
+  const applyBtn = document.createElement("button");
+  applyBtn.textContent = "Apply";
+  applyBtn.style = "margin-top:8px;background:#2196f3;color:#fff;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;";
+  applyBtn.onclick = () => {
+    const selected = [...dropdown.querySelectorAll("input:checked")].map(cb => cb.value);
+    columnFilters[col] = selected;
+    applyFilters();
+    dropdown.remove();
+  };
+  dropdown.appendChild(applyBtn);
+
+  document.body.appendChild(dropdown);
+  const rect = e.target.getBoundingClientRect();
+  dropdown.style.left = rect.left + "px";
+  dropdown.style.top = rect.bottom + "px";
+}
+
+function applyFilters() {
+  filteredPatients = allPatients.filter(r => {
+    return Object.keys(columnFilters).every(col => {
+      if (!columnFilters[col]?.length) return true;
+      return columnFilters[col].includes(r[col]);
+    });
+  });
+  document.getElementById("patient-count").textContent = filteredPatients.length;
+  renderTable();
+}
+
 function exportToExcel() {
-  const ws = XLSX.utils.json_to_sheet(allPatients);
+  const ws = XLSX.utils.json_to_sheet(filteredPatients);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Patients");
   XLSX.writeFile(wb, `Patient_Data_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 
-// Export to PDF
 function exportToPDF() {
-  if (allPatients.length === 0) return alert("No data to export.");
+  if (!filteredPatients.length) return alert("No data to export.");
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF("landscape");
-  const headers = Object.keys(allPatients[0]);
-  const body = allPatients.map(r => headers.map(h => r[h] || ""));
-  doc.setFontSize(16);
+  const headers = Object.keys(filteredPatients[0]);
+  const body = filteredPatients.map(r => headers.map(h => r[h] || ""));
   doc.text("Patient Data Report", 15, 15);
-  doc.autoTable({
-    head: [headers],
-    body: body,
-    startY: 25,
-    styles: { fontSize: 7, cellPadding: 1.5 },
-    headStyles: { fillColor: [26, 58, 95], textColor: 255 },
-  });
+  doc.autoTable({ head: [headers], body, startY: 25, styles: { fontSize: 7 } });
   doc.save(`Patient_Data_${new Date().toISOString().slice(0,10)}.pdf`);
 }
 
+window.addEventListener("click", () => document.querySelectorAll(".filter-dropdown").forEach(f => f.remove()));
 window.addEventListener("DOMContentLoaded", init);
 </script>
 </body>
