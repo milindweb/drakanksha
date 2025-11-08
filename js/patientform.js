@@ -21,7 +21,7 @@ form.addEventListener("submit", e => {
   const hh = String(now.getHours()).padStart(2, "0");     // hours 00–23
   const min = String(now.getMinutes()).padStart(2, "0");  // minutes 00–59
   const ss = String(now.getSeconds()).padStart(2, "0");   // seconds 00–59
-  const opdNo = `${yy}${mm}${dd}${hh}${min}${ss}`;        // combine into YYMMDDHHMMS format
+  document.getElementById("opdNo").value = opdNo;        // combine into YYMMDDHHMMS format
 
   // Add the generated OPD number to the data being sent
   data.opdNo = opdNo;
@@ -49,3 +49,4 @@ form.addEventListener("submit", e => {
     responseDiv.innerHTML = "<div class='alert error'>❌ Error saving data. Try again.</div>";
   });
 });
+
