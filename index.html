@@ -5,293 +5,805 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clinic | Online & In-Person Consultations</title>
   <link rel="icon" type="image/png" href="img/favicon.png" />
-
+  
   <!-- Header + Footer CSS -->
   <link rel="stylesheet" href="css/headerfooter.css" />
-
-  <!-- Font Awesome (for icons) -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
-
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
   <!-- JS to load header/footer -->
   <script src="js/headerfooter.js" defer></script>
-
+  
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     :root {
       --primary: #3b82f6;
+      --primary-dark: #2563eb;
       --accent: #60a5fa;
+      --success: #10b981;
       --dark-bg: #0f172a;
+      --dark-card: #1e293b;
+      --dark-border: #334155;
       --light-text: #f1f5f9;
       --muted: #94a3b8;
-      --border: #1e293b;
+      
+      --bg-primary: var(--dark-bg);
+      --bg-secondary: var(--dark-card);
+      --text-primary: var(--light-text);
+      --text-secondary: var(--muted);
+      --border-color: var(--dark-border);
+      --shadow: rgba(0, 0, 0, 0.3);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --border-color: #e2e8f0;
+      --shadow: rgba(0, 0, 0, 0.1);
     }
 
     body {
-      background: var(--dark-bg);
-      color: var(--light-text);
-      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      line-height: 1.6;
     }
 
-    /* ===== HERO SECTION ===== */
+    /* Theme toggle button (add to header via JS) */
+    .theme-toggle {
+      background: var(--primary);
+      border: none;
+      color: white;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10000;
+    }
+
+    .theme-toggle:hover {
+      background: var(--primary-dark);
+      transform: scale(1.1) rotate(20deg);
+    }
+
+    /* ===== HERO ===== */
     .hero {
-      padding: 4rem 2rem;
+      padding: 6rem 2rem;
       text-align: center;
-      background: radial-gradient(circle at 20% 20%, #1e293b, #0f172a);
-      border-bottom: 1px solid var(--border);
-      animation: fadeIn 1.2s ease;
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 0.8s ease;
     }
 
     .hero h1 {
-      font-size: 2.2rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--accent);
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    .hero p {
-      font-size: 1.1rem;
-      color: var(--muted);
+    .hero .subtitle {
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto 2rem;
     }
 
-    /* ===== INFO SECTION ===== */
-    .info {
+    .hero-badges {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .badge {
       display: flex;
       flex-direction: column;
       align-items: center;
-      text-align: center;
-      gap: 1.2rem;
-      padding: 3rem 1.5rem;
-      max-width: 900px;
+      gap: 0.5rem;
+      padding: 1rem 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .badge:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px var(--shadow);
+    }
+
+    .badge i {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .badge span {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* ===== SERVICES ===== */
+    .services {
+      padding: 5rem 2rem;
+      max-width: 1200px;
       margin: 0 auto;
-      animation: fadeUp 1.2s ease;
     }
 
-    .info h2 {
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      color: var(--text-primary);
+      position: relative;
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: var(--primary);
+      margin: 1rem auto 0;
+      border-radius: 2px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .service-card {
+      background: var(--bg-secondary);
+      padding: 2rem;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.8s ease;
+      animation-fill-mode: both;
+    }
+
+    .service-card:nth-child(1) { animation-delay: 0.1s; }
+    .service-card:nth-child(2) { animation-delay: 0.2s; }
+    .service-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px var(--shadow);
+      border-color: var(--primary);
+    }
+
+    .service-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
       font-size: 1.8rem;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
+      color: white;
+      transition: transform 0.3s ease;
     }
 
-    .info p {
-      color: var(--light-text);
-      max-width: 700px;
+    .service-card:hover .service-icon {
+      transform: scale(1.1) rotate(5deg);
     }
 
-    .highlight {
-      color: var(--accent);
-      font-weight: 500;
+    .service-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .service-card p {
+      color: var(--text-secondary);
+      line-height: 1.8;
     }
 
     /* ===== BOOKING SECTION ===== */
-    .booking {
-      background: #1e293b;
-      padding: 3rem 1.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+    .booking-section {
+      background: var(--bg-secondary);
+      padding: 5rem 2rem;
+      margin: 3rem 0;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .booking-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
       align-items: center;
-      gap: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-      margin: 2rem auto;
-      max-width: 1000px;
-      animation: fadeIn 1.2s ease;
     }
 
-    .booking-text {
-      flex: 1 1 360px;
+    .booking-info h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      animation: fadeInLeft 0.8s ease;
     }
 
-    .booking-text h3 {
-      font-size: 1.6rem;
+    .booking-info p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
       margin-bottom: 1rem;
-      color: var(--accent);
+      animation: fadeInLeft 0.9s ease;
     }
 
-    .booking-text p {
-      color: var(--light-text);
-      margin-bottom: 1rem;
-    }
-
-    .fee {
-      color: var(--muted);
-      font-style: italic;
+    .fee-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin: 1.5rem 0;
+      animation: pulse 2s ease infinite;
     }
 
     .booking-actions {
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
-      margin-top: 1.2rem;
+      margin-top: 2rem;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       background: var(--primary);
       color: white;
       text-decoration: none;
-      padding: 0.7rem 1.4rem;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: background 0.3s ease;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
     }
 
-    .btn i {
-      font-size: 1.1rem;
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
     }
 
     .btn:hover {
-      background: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
     }
 
-    /* ===== QR PAYMENT SECTION ===== */
-    .payment {
+    .btn i {
+      font-size: 1.3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* ===== PAYMENT CARD ===== */
+    .payment-card {
+      background: var(--bg-primary);
+      padding: 2.5rem;
+      border-radius: 20px;
+      border: 2px solid var(--border-color);
       text-align: center;
-      margin-top: 1rem;
-      flex: 0 1 240px;
+      animation: fadeInRight 0.8s ease;
+      box-shadow: 0 8px 24px var(--shadow);
     }
 
-    .payment h4 {
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-      font-weight: 600;
+    .payment-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
     }
 
-    .payment img {
-      width: 180px;
-      height: auto;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
-      margin-bottom: 0.5rem;
+    .qr-container {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      display: inline-block;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease;
     }
 
-    .payment img:hover {
-      transform: scale(1.05);
+    .qr-container:hover {
+      transform: scale(1.05) rotate(2deg);
     }
 
-    .payment p {
-      font-size: 0.9rem;
-      color: var(--muted);
+    .qr-container img {
+      width: 200px;
+      height: 200px;
+      display: block;
+      border-radius: 8px;
     }
 
-    /* ===== ONLINE CONSULTATION ===== */
-    .online {
-      text-align: center;
-      padding: 3rem 1rem;
-      animation: fadeUp 1.4s ease;
+    .payment-note {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-top: 1rem;
     }
 
-    .online h2 {
-      color: var(--accent);
-      margin-bottom: 0.6rem;
-    }
-
-    .online p {
-      max-width: 700px;
+    /* ===== FEATURES ===== */
+    .features {
+      padding: 5rem 2rem;
+      max-width: 1200px;
       margin: 0 auto;
-      color: var(--light-text);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature {
+      text-align: center;
+      padding: 2rem;
+      animation: fadeInUp 0.8s ease;
+      animation-fill-mode: both;
+    }
+
+    .feature:nth-child(1) { animation-delay: 0.1s; }
+    .feature:nth-child(2) { animation-delay: 0.2s; }
+    .feature:nth-child(3) { animation-delay: 0.3s; }
+    .feature:nth-child(4) { animation-delay: 0.4s; }
+
+    .feature i {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .feature:hover i {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    .feature h4 {
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
+      color: var(--text-primary);
+    }
+
+    .feature p {
+      color: var(--text-secondary);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: var(--bg-secondary);
+      padding: 3rem 2rem 1.5rem;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Main content wrapper */
+    main {
+      flex: 1;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
     }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       .hero h1 {
-        font-size: 1.8rem;
+        font-size: 2rem;
       }
-      .booking {
-        flex-direction: column;
-        text-align: center;
+
+      .hero .subtitle {
+        font-size: 1.1rem;
       }
+
+      .theme-toggle {
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+      }
+
+      .booking-container {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .logo {
+        font-size: 1.2rem;
+      }
+
       .booking-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
         justify-content: center;
       }
-    }
-
-    /* ===== ANIMATIONS ===== */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 
 <body>
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
   <!-- Header (auto loaded) -->
   <div id="header"></div>
 
-  <!-- HERO -->
+  <main>
+
+  <!-- Hero Section -->
   <section class="hero">
-    <h1>Professional Medical Consultation</h1>
-    <p>Providing trusted, private and personalized healthcare — in person or online.</p>
-  </section>
-
-  <!-- INFO SECTION -->
-  <section class="info">
-    <h2>Welcome</h2>
-    <p>
-      We provide comprehensive healthcare consultations with personalized treatment plans.
-      Book an appointment for a general checkup or online consultation.
-    </p>
-    <p class="highlight">Your health is our priority.</p>
-  </section>
-
-  <!-- BOOKING + PAYMENT SECTION -->
-  <section class="booking">
-    <div class="booking-text">
-      <h3>Book Your Appointment</h3>
-      <p>
-        Please confirm your booking by paying the consultation fee of <strong>₹500</strong>
-        before your appointment. Use the QR code to pay securely via UPI.
+    <div class="hero-content">
+      <h1>Professional Medical Consultation</h1>
+      <p class="subtitle">
+        Providing trusted, private, and personalized healthcare solutions — 
+        available both in-person and online for your convenience.
       </p>
-      <p class="fee">Consultation Fee: ₹500 (Pay First)</p>
-
-      <div class="booking-actions">
-        <a
-          href="https://wa.me/919869787575?text=Hello%2C%20I%20would%20like%20to%20book%20an%20appointment."
-          class="btn"
-          target="_blank"
-          ><i class="fa-brands fa-whatsapp"></i> Book via WhatsApp</a
-        >
-        <a
-          href="https://t.me/itsmakk"
-          class="btn"
-          target="_blank"
-          ><i class="fa-brands fa-telegram"></i> Book via Telegram</a
-        >
+      
+      <div class="hero-badges">
+        <div class="badge">
+          <i class="fas fa-user-md"></i>
+          <span>Expert Doctors</span>
+        </div>
+        <div class="badge">
+          <i class="fas fa-shield-alt"></i>
+          <span>100% Confidential</span>
+        </div>
+        <div class="badge">
+          <i class="fas fa-clock"></i>
+          <span>Quick Response</span>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="payment">
-      <h4>Pay via UPI</h4>
-      <img src="img/payment_qr.png" alt="UPI QR Code" />
-      <p>Scan this QR to pay ₹500 securely before consultation.</p>
+  <!-- Services Section -->
+  <section class="services">
+    <h2 class="section-title">Our Services</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-stethoscope"></i>
+        </div>
+        <h3>General Consultation</h3>
+        <p>
+          Comprehensive health assessments, diagnosis, and treatment plans 
+          tailored to your specific needs with personalized care.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-laptop-medical"></i>
+        </div>
+        <h3>Online Consultation</h3>
+        <p>
+          Connect with our medical professionals from anywhere via secure 
+          WhatsApp or Telegram video consultations.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-prescription"></i>
+        </div>
+        <h3>Prescription & Follow-up</h3>
+        <p>
+          Receive digital prescriptions instantly and schedule follow-up 
+          appointments for continuous care and monitoring.
+        </p>
+      </div>
     </div>
   </section>
 
-  <!-- ONLINE CONSULTATION SECTION -->
-  <section class="online">
-    <h2>Online Consultation</h2>
-    <p>
-      For patients unable to visit the clinic physically, online consultations are available through
-      WhatsApp or Telegram. After confirming your payment, our medical team will share a secure consultation link.
-    </p>
+  <!-- Booking Section -->
+  <section class="booking-section">
+    <div class="booking-container">
+      <div class="booking-info">
+        <h2>Book Your Appointment</h2>
+        <p>
+          Schedule your consultation with our experienced medical professionals. 
+          We offer flexible appointment slots to accommodate your schedule.
+        </p>
+        <p>
+          Please confirm your booking by completing the payment before your 
+          appointment time. This ensures your slot is secured and helps us 
+          serve you better.
+        </p>
+        
+        <div class="fee-highlight">
+          <i class="fas fa-rupee-sign"></i>
+          <span>Consultation Fee: ₹500</span>
+        </div>
+
+        <div class="booking-actions">
+          <a href="https://wa.me/919869787575?text=Hello%2C%20I%20would%20like%20to%20book%20an%20appointment." 
+             class="btn" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+            <span>Book via WhatsApp</span>
+          </a>
+          <a href="https://t.me/itsmakk" class="btn btn-secondary" target="_blank">
+            <i class="fab fa-telegram"></i>
+            <span>Book via Telegram</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="payment-card">
+        <h3>Secure Payment</h3>
+        <div class="qr-container">
+          <img src="img/payment_qr.png" alt="UPI Payment QR Code" />
+        </div>
+        <p class="payment-note">
+          Scan the QR code to pay ₹500 securely via UPI. 
+          Your payment confirms your appointment booking.
+        </p>
+      </div>
+    </div>
   </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <h2 class="section-title">Why Choose Us</h2>
+    <div class="features-grid">
+      <div class="feature">
+        <i class="fas fa-certificate"></i>
+        <h4>Certified Professionals</h4>
+        <p>Our doctors are highly qualified and experienced</p>
+      </div>
+
+      <div class="feature">
+        <i class="fas fa-lock"></i>
+        <h4>Privacy Guaranteed</h4>
+        <p>Your medical information is completely confidential</p>
+      </div>
+
+      <div class="feature">
+        <i class="fas fa-hand-holding-medical"></i>
+        <h4>Personalized Care</h4>
+        <p>Treatment plans tailored to your unique needs</p>
+      </div>
+
+      <div class="feature">
+        <i class="fas fa-headset"></i>
+        <h4>24/7 Support</h4>
+        <p>We're here to answer your questions anytime</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
 
   <!-- Footer (auto loaded) -->
   <div id="footer"></div>
+
+  <script>
+    // Theme Toggle Functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const icon = themeToggle.querySelector('i');
+
+    // Check for saved theme preference or default to 'dark'
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', currentTheme);
+    updateIcon(currentTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateIcon(newTheme);
+    });
+
+    function updateIcon(theme) {
+      if (theme === 'dark') {
+        icon.className = 'fas fa-moon';
+      } else {
+        icon.className = 'fas fa-sun';
+      }
+    }
+
+    // Scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.querySelectorAll('.service-card, .feature, .booking-info, .payment-card').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
 </body>
 </html>
