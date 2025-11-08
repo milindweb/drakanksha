@@ -82,11 +82,21 @@
 <body>
 
 <h2>Patient Registration Form</h2>
+
 <form id="patientForm">
+
+  <!-- OPD No removed: now auto-generated on backend -->
+  
+  <!-- Compulsory fields start here -->
   <div class="row">
-    <!-- <div class="field"><label>OPD No</label><input name="opdNo" required></div>   -->
-    <div class="field"><label>Mobile No</label><input name="mobileNo" required pattern="[6-9][0-9]{9}" title="Enter valid 10-digit number"></div>
-    <div class="field"><label>Patient Name</label><input name="patientName" required></div>
+    <div class="field">
+      <label>Mobile No</label>
+      <input name="mobileNo" required pattern="[6-9][0-9]{9}" title="Enter valid 10-digit number">
+    </div>
+    <div class="field">
+      <label>Patient Name</label>
+      <input name="patientName" required>
+    </div>
   </div>
 
   <div class="row">
@@ -99,12 +109,57 @@
         <option>Other</option>
       </select>
     </div>
-    <div class="field"><label>Age</label><input name="age" type="number" required></div>
-    <div class="field"><label>Doctor Name</label><input name="doctorName" required></div>
+    <div class="field">
+      <label>Age</label>
+      <input name="age" type="number" required>
+    </div>
+    <div class="field">
+      <!-- Doctor Name Dropdown -->
+      <label>Doctor Name</label>
+      <select name="doctorName" required>
+        <option value="">Select Doctor</option>
+        <option>Dr. ABCD</option>
+        <option>Dr. ABC</option>
+        <option>Dr. BCD</option>
+      </select>
+    </div>
   </div>
 
   <div class="row">
-    <div class="field"><label>Department</label><input name="department"></div>
+    <div class="field">
+      <!-- Department Dropdown -->
+      <label>Department</label>
+      <select name="department" required>
+        <option value="">Select Department</option>
+        <option>General Medicine / Physician</option>
+        <option>General Surgery</option>
+        <option>Cardiology (Heart Specialist)</option>
+        <option>Dental / Oral Surgery</option>
+        <option>Dermatology (Skin & Hair)</option>
+        <option>Endocrinology (Diabetes / Thyroid)</option>
+        <option>ENT (Ear, Nose, Throat)</option>
+        <option>Gastroenterology (Digestive System)</option>
+        <option>Nephrology (Kidney)</option>
+        <option>Neurology (Brain & Nerves)</option>
+        <option>Obstetrics & Gynecology (Gynac)</option>
+        <option>Oncology (Cancer)</option>
+        <option>Ophthalmology (Eye)</option>
+        <option>Orthopedics</option>
+        <option>Pediatrics (Child Specialist)</option>
+        <option>Physiotherapy / Rehabilitation</option>
+        <option>Plastic & Reconstructive Surgery</option>
+        <option>Psychiatry (Mental Health)</option>
+        <option>Pulmonology / Chest Medicine</option>
+        <option>Radiology & Imaging</option>
+        <option>Urology (Urinary / Male Reproductive)</option>
+        <option>Others / Not Listed</option>
+      </select>
+    </div>
+  </div>
+  <!-- Compulsory fields end here -->
+
+  <!-- Optional fields below this line -->
+  <div class="row">
     <div class="field"><label>Symptoms</label><input name="symptoms"></div>
     <div class="field"><label>Weight</label><input name="weight"></div>
   </div>
@@ -135,9 +190,8 @@
   <div id="response"></div>
 </form>
 
-<!-- ✅ External JS file -->
+<!-- External JS file for submission logic -->
 <script src="js/patientform.js"></script>
 
 </body>
 </html>
-
