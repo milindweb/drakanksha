@@ -1,327 +1,694 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Milindweb - Patient Data Management</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Milindweb - Patient Data Management</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <!-- Icons + libs -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
-<link rel="stylesheet" href="css/headerfooter.css">
-<script src="js/headerfooter.js" defer></script>
+  <!-- header/footer (your files) -->
+  <link rel="stylesheet" href="css/headerfooter.css">
+  <script src="js/headerfooter.js" defer></script>
 
-<style>
-  :root {
-    --primary: #0d47a1;
-    --accent: #2196f3;
-    --dark-bg: #121212;
-    --dark-card: #1e1e1e;
-    --dark-header: #242424;
-    --text: #e0e0e0;
-    --muted: #999;
-  }
+  <style>
+    :root{
+      --bg: #0d0f12;
+      --card: #111214;
+      --panel: #151719;
+      --muted: #9aa0a6;
+      --accent: #4fc3f7;
+      --primary: #0b63a3;
+      --success: #2e7d32;
+      --danger: #d32f2f;
+      --glass: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.04);
+    }
 
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: var(--dark-bg);
-    color: var(--text);
-    margin: 0;
-    padding: 0;
-  }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background:var(--bg);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
 
-  .patient-container {
-    max-width: 1800px;
-    margin: 40px auto;
-    padding: 0 20px;
-  }
+    /* header/footer placeholders (loaded externally) */
+    #header, #footer{background:var(--panel); color:var(--muted); padding:10px 16px;}
 
-  .page-header {
-    background: var(--dark-card);
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    margin-bottom: 30px;
-  }
+    .patient-container{
+      max-width: 1600px;
+      width:100%;
+      margin:28px auto;
+      padding: 0 16px 40px;
+      flex:1;
+    }
 
-  .page-header h2 {
-    color: var(--accent);
-  }
+    .page-header{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border:1px solid var(--border);
+      padding:18px;
+      border-radius:10px;
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:18px;
+    }
 
-  .page-header p {
-    color: var(--muted);
-  }
+    .page-header .left{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .page-header h2{font-size:20px; margin:0; color:var(--accent)}
+    .page-header p{margin:0; color:var(--muted); font-size:13px;}
 
-  .table-section {
-    background: var(--dark-card);
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-  }
+    .table-section{
+      background: linear-gradient(180deg, #0f1113, #0b0c0d);
+      border:1px solid var(--border);
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.6);
+    }
 
-  .table-header {
-    padding: 15px 20px;
-    background: var(--dark-header);
-    color: var(--text);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
+    .table-header{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:14px 16px;
+      background:var(--panel);
+      border-bottom:1px solid var(--border);
+      flex-wrap:wrap;
+    }
 
-  .info-box {
-    background: rgba(255,255,255,0.1);
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+    .table-header h3{margin:0; color:var(--accent); font-size:16px; display:flex; gap:10px; align-items:center;}
+    .info-box{
+      margin-left:8px;
+      background:var(--glass);
+      padding:8px 12px;
+      border-radius:8px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+      font-size:13px;
+    }
 
-  .export-buttons {
-    display: flex;
-    gap: 10px;
-  }
+    .export-buttons{margin-left:auto; display:flex; gap:8px; align-items:center;}
+    .export-btn{
+      background:var(--primary);
+      color:white;
+      border:none;
+      padding:8px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:13px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .apply-filter-btn{background: #2a5a8c}
+    .clear-filter-btn{background:#444;}
+    .export-excel{background:#1b5e20}
+    .export-pdf{background:var(--danger)}
 
-  .export-btn {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    color: white;
-  }
+    .export-btn:active{transform:translateY(1px)}
 
-  .export-excel { background: #2e7d32; }
-  .export-excel:hover { background: #1b5e20; }
-  .export-pdf { background: #c62828; }
-  .export-pdf:hover { background: #8e0000; }
+    .active-filters{
+      padding:12px 16px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+    }
 
-  .table-container {
-    overflow: auto;
-    max-height: 75vh;
-  }
+    .filter-tag{
+      background: rgba(79,195,247,0.08);
+      color:var(--accent);
+      padding:6px 10px;
+      border-radius:20px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-size:13px;
+      border:1px solid rgba(79,195,247,0.08);
+    }
+    .filter-tag .remove{cursor:pointer;color:var(--muted)}
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    color: var(--text);
-    font-size: 0.85rem;
-  }
+    .table-container{ overflow:auto; max-height:68vh; padding:12px; }
 
-  th {
-    background: var(--primary);
-    color: #fff;
-    padding: 10px;
-    position: sticky;
-    top: 0;
-    cursor: pointer;
-    text-align: left;
-    border-right: 1px solid rgba(255,255,255,0.1);
-    white-space: nowrap;
-  }
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      min-width:1100px;
+      background:transparent;
+      color:var(--muted);
+      font-size:13px;
+    }
 
-  th:hover {
-    background: #1565c0;
-  }
+    thead th{
+      position: sticky;
+      top:0;
+      z-index:9;
+      background:linear-gradient(180deg,#0f2b44,#0b2436);
+      color:#ecf8ff;
+      padding:10px 12px;
+      text-align:left;
+      font-weight:600;
+      border-right:1px solid rgba(255,255,255,0.03);
+      white-space:nowrap;
+    }
 
-  td {
-    padding: 8px;
-    border-bottom: 1px solid #333;
-  }
+    thead th .header-inner{display:flex; gap:8px; align-items:center;}
+    thead th .filter-icon{margin-left:8px; color:rgba(255,255,255,0.7); cursor:pointer; font-size:12px;}
+    thead th.filter-active{box-shadow: inset 0 -3px 0 rgba(79,195,247,0.08);}
 
-  tr:nth-child(even) {
-    background: #1a1a1a;
-  }
+    tbody td{
+      padding:9px 12px;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(180deg, rgba(255,255,255,0.004), transparent);
+      color:#dbe9f7;
+      vertical-align:top;
+      white-space:nowrap;
+    }
+    tbody tr:nth-child(even) td{ background: rgba(255,255,255,0.01); }
 
-  tr:hover {
-    background: #2a2a2a;
-  }
+    tbody tr:hover td{ background: rgba(255,255,255,0.02); }
 
-  .filter-dropdown {
-    position: absolute;
-    background: #1f1f1f;
-    color: #fff;
-    border: 1px solid #333;
-    border-radius: 6px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    padding: 10px;
-    z-index: 100;
-    max-height: 250px;
-    overflow-y: auto;
-    display: none;
-  }
+    /* filter dropdown */
+    .filter-dropdown{
+      position:absolute;
+      background:#0e1113;
+      border:1px solid var(--border);
+      color:var(--muted);
+      padding:12px;
+      border-radius:8px;
+      min-width:220px;
+      max-height:260px;
+      overflow:auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      display:none;
+      z-index:1100;
+    }
+    .filter-dropdown.active{ display:block; }
 
-  .filter-dropdown.active {
-    display: block;
-  }
+    .filter-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; color:var(--accent) }
+    .filter-options{ display:flex; flex-direction:column; gap:8px; }
+    .filter-option{ display:flex; gap:8px; align-items:center; }
+    .filter-option input{ cursor:pointer; }
+    .filter-option label{ cursor:pointer; font-size:13px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
-  .filter-option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 4px 0;
-  }
+    .no-data{ text-align:center; padding:36px; color:var(--muted); }
+    .loading{ text-align:center; padding:36px; color:var(--muted); }
+    .loading-spinner{
+      width:36px; height:36px; border-radius:50%; border:4px solid rgba(255,255,255,0.06);
+      border-top-color:var(--accent);
+      margin:0 auto 12px;
+      animation:spin 1s linear infinite;
+    }
+    @keyframes spin{ to{ transform:rotate(360deg) } }
 
-  .filter-option label {
-    cursor: pointer;
-    font-size: 0.85rem;
-  }
+    /* filter badge */
+    .filter-badge{
+      position:absolute;
+      top:6px; right:6px;
+      background:var(--accent);
+      color:#04121a;
+      width:18px; height:18px; font-size:11px;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,0.06);
+    }
 
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-</style>
+    /* responsive */
+    @media (max-width:900px){
+      thead th, tbody td{ font-size:12px; padding:8px; }
+      .export-buttons{ width:100%; justify-content:flex-end; gap:6px; }
+      .page-header{ flex-direction:column; gap:8px; align-items:flex-start; }
+    }
+  </style>
 </head>
 <body>
-<div id="header"></div>
+  <!-- header loaded from your header.html -->
+  <div id="header"></div>
 
-<div class="patient-container">
-  <div class="page-header">
-    <h2><i class="fa-solid fa-user-doctor"></i> Patient Data Management</h2>
-    <p>Dark Mode + Filterable view of all patient records</p>
-  </div>
-
-  <div class="table-section">
-    <div class="table-header">
-      <h3><i class="fa-solid fa-table"></i> All Patient Data</h3>
-      <div class="info-box">
-        <i class="fa-solid fa-database"></i>
-        <span id="patient-count">Loading...</span> records
+  <div class="patient-container">
+    <div class="page-header">
+      <div class="left">
+        <div style="font-size:20px;color:var(--accent)"><i class="fas fa-hospital-user"></i></div>
+        <div>
+          <h2>Patient Management System</h2>
+          <p>View and filter all patient records from Sheet1 — dark mode, sortable, filterable and exportable.</p>
+        </div>
       </div>
-      <div class="export-buttons">
-        <button class="export-btn export-excel" onclick="exportToExcel()">
-          <i class="fa-solid fa-file-excel"></i> Excel
-        </button>
-        <button class="export-btn export-pdf" onclick="exportToPDF()">
-          <i class="fa-solid fa-file-pdf"></i> PDF
-        </button>
+
+      <div class="right">
+        <!-- space for future buttons -->
       </div>
     </div>
 
-    <div class="table-container" id="table-container">
-      <div class="loading" style="text-align:center;padding:30px;color:#aaa;">Fetching data...</div>
+    <div class="table-section">
+      <div class="table-header">
+        <h3><i class="fas fa-table"></i> Patient Records (Sheet1)</h3>
+
+        <div class="info-box">
+          <i class="fas fa-database"></i>
+          <span id="patient-count">Loading...</span> records
+        </div>
+
+        <div class="export-buttons">
+          <button class="export-btn apply-filter-btn" onclick="applyAllFilters()">
+            <i class="fas fa-filter"></i> Apply Filters
+          </button>
+          <button class="export-btn clear-filter-btn" onclick="clearAllFilters()">
+            <i class="fas fa-times"></i> Clear All
+          </button>
+          <button class="export-btn export-excel" onclick="exportToExcel()">
+            <i class="fas fa-file-excel"></i> Excel
+          </button>
+          <button class="export-btn export-pdf" onclick="exportToPDF()">
+            <i class="fas fa-file-pdf"></i> PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="active-filters" id="active-filters">
+        <div class="filter-tag" style="background-color: #222;">No active filters</div>
+      </div>
+
+      <div class="table-container">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          Loading patient data...
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<div id="footer"></div>
+  <!-- footer loaded from your footer.html -->
+  <div id="footer"></div>
 
-<script>
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/1L0OqLtzT9X-WlU3HT4H7OSmhsQ1rKYNSwbKO4IcxxWw/export?format=csv&sheet=Sheet1";
-let allPatients = [];
-let filteredPatients = [];
-let columnFilters = {};
+  <script>
+    /*******************************
+     * CONFIG - keep your logic intact
+     *******************************/
+    const SHEET_URL = "https://docs.google.com/spreadsheets/d/1L0OqLtzT9X-WlU3HT4H7OSmhsQ1rKYNSwbKO4IcxxWw/export?format=csv&sheet=Sheet1";
 
-function init() {
-  Papa.parse(SHEET_URL, {
-    download: true,
-    header: true,
-    complete: (res) => {
-      allPatients = res.data;
-      filteredPatients = [...allPatients];
-      document.getElementById("patient-count").textContent = allPatients.length;
+    // Data structures (names kept aligned with sample)
+    let allPatients = [];
+    let filteredPatients = [];
+    let columnFilters = {};
+    let currentSort = { column: null, direction: null };
+    let filterDropdowns = {};
+
+    // DOM
+    const tableContainer = document.querySelector('.table-container');
+    const patientCountEl = document.getElementById('patient-count');
+    const activeFiltersContainer = document.getElementById('active-filters');
+
+    // Init
+    function init() {
+      loadData();
+    }
+
+    // Load CSV via PapaParse (your original logic preserved)
+    function loadData() {
+      Papa.parse(SHEET_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          allPatients = results.data;
+          filteredPatients = [...allPatients];
+
+          initColumnFilters();
+          patientCountEl.textContent = filteredPatients.length;
+
+          renderTable();
+        },
+        error: function(error) {
+          console.error("Error loading data:", error);
+          tableContainer.innerHTML = '<div class="no-data"><i class="fas fa-exclamation-triangle"></i><p>Error loading data. Please try again later.</p></div>';
+        }
+      });
+    }
+
+    // Initialize filters (same pattern as sample)
+    function initColumnFilters() {
+      columnFilters = {};
+
+      if (allPatients.length > 0) {
+        const columns = Object.keys(allPatients[0]);
+
+        columns.forEach(col => {
+          const unique = new Set();
+          allPatients.forEach(p => {
+            if (p[col] !== undefined && p[col] !== null && String(p[col]).trim() !== "") {
+              unique.add(String(p[col]));
+            }
+          });
+
+          columnFilters[col] = {
+            values: Array.from(unique).sort((a,b) => a.localeCompare(b)),
+            selected: []
+          };
+        });
+      }
+    }
+
+    // Apply filters to produce filteredPatients
+    function applyFilters() {
+      filteredPatients = allPatients.filter(patient => {
+        for (const col in columnFilters) {
+          const f = columnFilters[col];
+          if (f.selected.length > 0) {
+            const val = patient[col] || '';
+            if (!f.selected.includes(String(val))) return false;
+          }
+        }
+        return true;
+      });
+
+      patientCountEl.textContent = filteredPatients.length;
+      renderActiveFilters();
+    }
+
+    // Render active filters tags
+    function renderActiveFilters() {
+      let html = '';
+      let count = 0;
+
+      for (const col in columnFilters) {
+        const f = columnFilters[col];
+        if (f.selected.length > 0) {
+          f.selected.forEach(val => {
+            html += `<div class="filter-tag"><span>${col}: ${val}</span><span class="remove" onclick="removeFilter('${escapeJs(col)}','${escapeJs(val)}')"><i class="fas fa-times"></i></span></div>`;
+            count++;
+          });
+        }
+      }
+
+      if (count > 0) {
+        html = `<div class="filter-tag" style="background-color: rgba(46,125,50,0.12); color: var(--accent);"><i class="fas fa-filter"></i> Active Filters: ${count}</div>` + html;
+      } else {
+        html = '<div class="filter-tag" style="background-color:#222;">No active filters</div>';
+      }
+
+      activeFiltersContainer.innerHTML = html;
+    }
+
+    // Remove a specific filter
+    function removeFilter(column, value) {
+      column = unescapeJs(column);
+      value = unescapeJs(value);
+      const idx = columnFilters[column].selected.indexOf(value);
+      if (idx !== -1) {
+        columnFilters[column].selected.splice(idx,1);
+        applyFilters();
+        renderTable();
+      }
+    }
+
+    // Clear all filters
+    function clearAllFilters() {
+      for (const col in columnFilters) {
+        columnFilters[col].selected = [];
+        if (filterDropdowns[col]) {
+          const boxes = filterDropdowns[col].querySelectorAll('input[type="checkbox"]');
+          boxes.forEach(b => b.checked = false);
+        }
+      }
+      applyFilters();
       renderTable();
     }
-  });
-}
 
-function renderTable() {
-  if (!filteredPatients.length) {
-    document.getElementById("table-container").innerHTML = "<div style='padding:30px;text-align:center;color:#999;'>No records found</div>";
-    return;
-  }
+    // Apply all (read UI checkboxes into columnFilters)
+    function applyAllFilters() {
+      for (const col in columnFilters) {
+        if (filterDropdowns[col]) {
+          const checked = Array.from(filterDropdowns[col].querySelectorAll('input[type="checkbox"]:checked'));
+          columnFilters[col].selected = checked.map(cb => cb.value);
+        }
+      }
+      applyFilters();
+      renderTable();
+    }
 
-  const headers = Object.keys(filteredPatients[0]);
-  let html = `<table><thead><tr>`;
-  headers.forEach(h => {
-    html += `<th data-col="${h}" onclick="toggleFilter('${h}', event)">${h} <i class='fa fa-filter' style='opacity:0.6;'></i></th>`;
-  });
-  html += `</tr></thead><tbody>`;
-  filteredPatients.forEach(r => {
-    html += `<tr>${headers.map(h => `<td>${r[h] || ""}</td>`).join('')}</tr>`;
-  });
-  html += `</tbody></table>`;
-  document.getElementById("table-container").innerHTML = html;
-}
+    // Render table with headers and rows (keeps structure as sample)
+    function renderTable() {
+      if (allPatients.length === 0) {
+        tableContainer.innerHTML = `
+          <div class="no-data"><i class="fas fa-exclamation-triangle"></i><p>No patient data available</p></div>
+        `;
+        return;
+      }
 
-function toggleFilter(col, e) {
-  e.stopPropagation();
-  document.querySelectorAll(".filter-dropdown").forEach(f => f.remove());
+      const headers = Object.keys(allPatients[0]);
+      let html = `<table id="patient-table"><thead><tr>`;
 
-  const dropdown = document.createElement("div");
-  dropdown.className = "filter-dropdown active";
-  dropdown.innerHTML = `<strong style='font-size:0.85rem;'>Filter by ${col}</strong><br>`;
+      headers.forEach(header => {
+        const isSorted = currentSort.column === header;
+        const sortIndicator = isSorted ? (currentSort.direction === 'asc' ? ' ↑' : ' ↓') : '';
+        const filterActive = columnFilters[header] && columnFilters[header].selected.length > 0;
+        const filterCount = filterActive ? columnFilters[header].selected.length : 0;
 
-  const unique = [...new Set(allPatients.map(r => r[col]).filter(v => v))].sort();
-  unique.forEach(v => {
-    const div = document.createElement("div");
-    div.className = "filter-option";
-    div.innerHTML = `<input type='checkbox' value="${v}"> <label>${v}</label>`;
-    dropdown.appendChild(div);
-  });
+        html += `
+          <th data-column="${escapeHtml(header)}" class="${filterActive ? 'filter-active' : ''}">
+            <div class="header-inner">
+              ${escapeHtml(header)}${sortIndicator}
+              <span class="filter-icon" data-column="${escapeHtml(header)}"><i class="fas fa-filter"></i></span>
+              ${filterActive ? `<span class="filter-badge">${filterCount}</span>` : ''}
+            </div>
+            <div class="filter-dropdown" id="filter-${cssSafeId(header)}">
+              <div class="filter-header"><h4>Filter by ${escapeHtml(header)}</h4></div>
+              <div class="filter-options" id="options-${cssSafeId(header)}"></div>
+            </div>
+          </th>
+        `;
+      });
 
-  const applyBtn = document.createElement("button");
-  applyBtn.textContent = "Apply";
-  applyBtn.style = "margin-top:8px;background:#2196f3;color:#fff;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;";
-  applyBtn.onclick = () => {
-    const selected = [...dropdown.querySelectorAll("input:checked")].map(cb => cb.value);
-    columnFilters[col] = selected;
-    applyFilters();
-    dropdown.remove();
-  };
-  dropdown.appendChild(applyBtn);
+      html += `</tr></thead><tbody>`;
 
-  document.body.appendChild(dropdown);
-  const rect = e.target.getBoundingClientRect();
-  dropdown.style.left = rect.left + "px";
-  dropdown.style.top = rect.bottom + "px";
-}
+      filteredPatients.forEach(p => {
+        html += '<tr>';
+        headers.forEach(h => {
+          html += `<td>${escapeHtml(p[h] || '')}</td>`;
+        });
+        html += '</tr>';
+      });
 
-function applyFilters() {
-  filteredPatients = allPatients.filter(r => {
-    return Object.keys(columnFilters).every(col => {
-      if (!columnFilters[col]?.length) return true;
-      return columnFilters[col].includes(r[col]);
-    });
-  });
-  document.getElementById("patient-count").textContent = filteredPatients.length;
-  renderTable();
-}
+      html += `</tbody></table>`;
+      tableContainer.innerHTML = html;
 
-function exportToExcel() {
-  const ws = XLSX.utils.json_to_sheet(filteredPatients);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Patients");
-  XLSX.writeFile(wb, `Patient_Data_${new Date().toISOString().slice(0,10)}.xlsx`);
-}
+      // store dropdown refs and populate
+      headers.forEach(h => {
+        const dropdown = document.getElementById(`filter-${cssSafeId(h)}`);
+        if (dropdown) {
+          filterDropdowns[h] = dropdown;
+          populateDropdown(h);
+        }
+      });
 
-function exportToPDF() {
-  if (!filteredPatients.length) return alert("No data to export.");
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF("landscape");
-  const headers = Object.keys(filteredPatients[0]);
-  const body = filteredPatients.map(r => headers.map(h => r[h] || ""));
-  doc.text("Patient Data Report", 15, 15);
-  doc.autoTable({ head: [headers], body, startY: 25, styles: { fontSize: 7 } });
-  doc.save(`Patient_Data_${new Date().toISOString().slice(0,10)}.pdf`);
-}
+      setupEventListeners();
+    }
 
-window.addEventListener("click", () => document.querySelectorAll(".filter-dropdown").forEach(f => f.remove()));
-window.addEventListener("DOMContentLoaded", init);
-</script>
+    // Populate filter options for a column
+    function populateDropdown(header) {
+      const container = document.getElementById(`options-${cssSafeId(header)}`);
+      if (!container) return;
+      container.innerHTML = '';
+      const f = columnFilters[header];
+
+      if (f && f.values.length > 0) {
+        f.values.forEach(value => {
+          const isSelected = f.selected.includes(value);
+          const option = document.createElement('div');
+          option.className = 'filter-option';
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.value = value;
+          checkbox.checked = isSelected;
+          checkbox.addEventListener('click', e => e.stopPropagation());
+
+          const label = document.createElement('label');
+          label.textContent = value;
+
+          option.appendChild(checkbox);
+          option.appendChild(label);
+          container.appendChild(option);
+        });
+      } else {
+        container.innerHTML = '<div class="no-options" style="color:var(--muted)">No filter options available</div>';
+      }
+    }
+
+    // Wire up sorting + filter icon events (same as sample)
+    function setupEventListeners() {
+      document.querySelectorAll('th').forEach(th => {
+        th.addEventListener('click', function(e) {
+          if (e.target.closest('.filter-icon')) return;
+          const column = this.getAttribute('data-column');
+          // Toggle sort
+          if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+          } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+          }
+          sortData();
+          renderTable();
+        });
+      });
+
+      document.querySelectorAll('.filter-icon').forEach(icon => {
+        icon.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const column = this.getAttribute('data-column');
+          const dropdown = document.getElementById(`filter-${cssSafeId(column)}`);
+
+          // close others
+          document.querySelectorAll('.filter-dropdown').forEach(dd => {
+            if (dd !== dropdown) dd.classList.remove('active');
+          });
+
+          dropdown.classList.toggle('active');
+        });
+      });
+
+      // close when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.filter-dropdown') && !e.target.closest('.filter-icon')) {
+          document.querySelectorAll('.filter-dropdown').forEach(dd => dd.classList.remove('active'));
+        }
+      });
+    }
+
+    // Sort logic (with numeric & date handling)
+    function sortData() {
+      if (!currentSort.column) return;
+      const col = currentSort.column;
+
+      filteredPatients.sort((a,b) => {
+        const aV = a[col] || '';
+        const bV = b[col] || '';
+        const dir = currentSort.direction === 'asc' ? 1 : -1;
+
+        // Try numeric
+        const aNum = parseFloat(String(aV).replace(/[, ]+/g,'')); 
+        const bNum = parseFloat(String(bV).replace(/[, ]+/g,''));
+        if (!isNaN(aNum) && !isNaN(bNum)) return (aNum - bNum) * dir;
+
+        // Try date columns common names heuristic
+        const dateCols = ['date','dob','appointment','retirement','joined','admit','discharge'];
+        if (dateCols.some(d => col.toLowerCase().includes(d))) {
+          const da = parseDate(String(aV));
+          const db = parseDate(String(bV));
+          if (da && db) return (da - db) * dir;
+        }
+
+        // fallback string compare
+        return String(aV).localeCompare(String(bV)) * dir;
+      });
+    }
+
+    // parse date helper (robust to many formats)
+    function parseDate(s) {
+      if (!s) return null;
+      s = s.trim();
+      // handle ISO
+      const iso = Date.parse(s);
+      if (!isNaN(iso)) return new Date(iso);
+
+      // DD/MM/YYYY or DD-MM-YYYY
+      const dmy = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+      if (dmy) return new Date(parseInt(dmy[3]), parseInt(dmy[2]) - 1, parseInt(dmy[1]));
+
+      // YYYY/MM/DD or YYYY-MM-DD
+      const ymd = s.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+      if (ymd) return new Date(parseInt(ymd[1]), parseInt(ymd[2]) - 1, parseInt(ymd[3]));
+
+      return null;
+    }
+
+    // Export to Excel (filtered)
+    function exportToExcel() {
+      if (filteredPatients.length === 0) return alert('No data to export');
+      const headers = Object.keys(filteredPatients[0]);
+      const dataForExport = filteredPatients.map(r => {
+        const row = {};
+        headers.forEach(h => row[h] = r[h] || '');
+        return row;
+      });
+      const ws = XLSX.utils.json_to_sheet(dataForExport);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Patients");
+      XLSX.writeFile(wb, `Patient_Data_${new Date().toISOString().slice(0,10)}.xlsx`);
+    }
+
+    // Export to PDF (filtered)
+    function exportToPDF() {
+      if (filteredPatients.length === 0) return alert('No data to export');
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('landscape');
+      const headers = Object.keys(filteredPatients[0]);
+      const rows = filteredPatients.map(r => headers.map(h => r[h] || ''));
+
+      doc.setFontSize(16);
+      doc.text('Patient Data Report', 14, 16);
+      doc.setFontSize(11);
+      doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 22);
+      doc.autoTable({
+        head: [headers],
+        body: rows,
+        startY: 28,
+        styles: { fontSize: 8, cellPadding: 1.5 },
+        headStyles: { fillColor: [11,99,163], textColor: 255 },
+        margin: { left: 10, right: 10 }
+      });
+      doc.save(`Patient_Data_${new Date().toISOString().slice(0,10)}.pdf`);
+    }
+
+    // Helpers
+    function cssSafeId(s){
+      return 'id_' + btoa(unescape(encodeURIComponent(s))).replace(/=/g,'');
+    }
+    function escapeHtml(str){
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+        .replaceAll('"','&quot;').replaceAll("'",'&#039;');
+    }
+    function escapeJs(str){
+      return encodeURIComponent(String(str));
+    }
+    function unescapeJs(str){
+      try { return decodeURIComponent(str); } catch(e){ return str; }
+    }
+
+    // Kick off
+    window.addEventListener('DOMContentLoaded', init);
+
+    // Expose some functions to global scope for onclick
+    window.exportToExcel = exportToExcel;
+    window.exportToPDF = exportToPDF;
+    window.removeFilter = removeFilter;
+    window.clearAllFilters = clearAllFilters;
+    window.applyAllFilters = applyAllFilters;
+  </script>
 </body>
 </html>
