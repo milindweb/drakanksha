@@ -149,11 +149,12 @@
         <option>Others / Not Listed</option>
       </select>
     </div>
+    <div class="field"><label>Symptoms</label><input name="symptoms"></div>
   </div>
 
   <!-- Row 3: Vitals + Normal Ranges -->
   <div class="row">
-    <div class="field"><label>Symptoms</label><input name="symptoms"></div>
+    
     <div class="field"><label>Weight <small>(Normal 50–80 kg)</small></label><input name="weight"></div>
     <div class="field"><label>BP <small>(Normal 120/80 mmHg)</small></label><input name="bp"></div>
     <div class="field"><label>Pulse <small>(Normal 60–100 bpm)</small></label><input name="pulse"></div>
@@ -167,23 +168,34 @@
   <div class="row">
     <div class="field"><label>Test Details</label><textarea name="testDetails"></textarea></div>
     <div class="field"><label>Test Reports</label><textarea name="testReports"></textarea></div>
+    <div class="field"><label>Diagnosis</label><textarea name="diagnosis"></textarea></div>
   </div>
 
   <!-- Row 5: Diagnosis -->
-  <div class="field"><label>Diagnosis</label><textarea name="diagnosis"></textarea></div>
+  
 
   <!-- Row 6: Prescription + Treatment -->
   <div class="row">
     <div class="field"><label>Prescription (Generic / Brand)</label><textarea name="prescription"></textarea></div>
     <div class="field"><label>Treatment Note</label><textarea name="treatmentNote"></textarea></div>
-  </div>
+   </div>
 
   <!-- Row 7: Advice + Effect + Fees -->
-  <div class="row">
-    <div class="field"><label>Advice</label><textarea name="advice"></textarea></div>
-    <div class="field"><label>Effect After Treatment</label><textarea name="effectAfterTreatment"></textarea></div>
-    <div class="field"><label>Dr. Fees</label><input name="drFees"></div>
+<div class="row">
+  <div class="field"><label>Advice</label><textarea name="advice"></textarea></div>
+  <div class="field">
+    <label>Effect After Treatment</label>
+    <select name="effectAfterTreatment">
+      <option value=""> NA </option>
+      <option>Recovered</option>
+      <option>No Change</option>
+      <option>Worsened</option>
+       <option>Follow-up Required</option>
+    </select>
   </div>
+  <div class="field"><label>Dr. Fees</label><input name="drFees"></div>
+</div>
+
 
   <!-- Row 8: Remarks -->
   <div class="field"><label>Dr. Remarks</label><textarea name="drRemarks"></textarea></div>
@@ -196,3 +208,4 @@
 
 </body>
 </html>
+
