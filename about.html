@@ -1,35 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About our Clinic</title>
-
-<link rel="stylesheet" href="css/headerfooter.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-
 body{
     background:#ffffff;
     font-family: system-ui, -apple-system, Roboto, Arial, sans-serif;
 }
 
-/* global smooth transitions */
+/* smooth transitions */
 *{
-    transition: all .22s ease;
+    transition:all .22s ease;
 }
 
-/* HERO */
+/* container hero top */
 .about-hero{
     background:#ffffff;
-    border:1px solid #e6e7ea;
+    border:1px solid #e5e7eb;
     margin:25px auto;
     width:92%;
     max-width:1050px;
     padding:25px;
     border-radius:18px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+    box-shadow:0 8px 22px rgba(0,0,0,0.05);
 }
 .about-hero h1{
     font-size:26px;
@@ -43,7 +31,7 @@ body{
     font-size:15px;
 }
 
-/* Section title */
+/* title */
 .sec-title{
     width:92%;
     max-width:1050px;
@@ -60,54 +48,53 @@ body{
     background:linear-gradient(90deg,#2563eb,#7c3aed);
 }
 
-/* Doctors list */
+/* doctor list flex column */
 .doctor-list{
     width:92%;
     max-width:1050px;
     margin:auto;
     display:flex;
     flex-direction:column;
-    gap:0;
 }
 
-/* Doctor Card */
+/* doctor card (flexbox) */
 .doc-card{
     width:100%;
     background:#ffffff;
-    border:1px solid transparent;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
     padding:16px;
     display:flex;
-    gap:15px;
-    box-shadow:0 6px 14px rgba(0,0,0,0.05);
-    border-bottom:1px solid #e5e7eb;
-    animation: fadeUp .45s ease forwards;
+    gap:18px;
+    box-shadow:0 6px 14px rgba(0,0,0,0.06);
+    margin-bottom:14px;
     opacity:0;
-}
-.doctor-list .doc-card:last-child{
-    border-bottom:0;
+    animation:fadeUp .45s ease forwards;
 }
 .doc-card:hover{
     transform:translateY(-3px);
-    box-shadow:0 12px 26px rgba(0,0,0,0.08);
+    box-shadow:0 12px 26px rgba(0,0,0,0.09);
 }
 
 .doc-photo{
-    width:78px;
-    height:78px;
+    flex:0 0 78px;
+    width:78px;height:78px;
     border-radius:14px;
     overflow:hidden;
     background:#f3f4f6;
     border:1px solid #e5e7eb;
 }
 .doc-photo img{
-    width:100%;height:100%;object-fit:cover;
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
 .doc-body h3{
-    margin:0 0 3px 0;
+    margin:0 0 4px 0;
     font-size:18px;
-    color:#0f172a;
     font-weight:700;
+    color:#0f172a;
 }
 .doc-body .spec{
     display:inline-block;
@@ -129,13 +116,13 @@ body{
     color:#475569;
 }
 
-/* TERMS */
+/* terms box */
 .terms{
     width:92%;
     max-width:1050px;
     margin:40px auto;
     background:#ffffff;
-    border:1px solid #e6e7ea;
+    border:1px solid #e5e7eb;
     border-radius:18px;
     padding:18px;
     font-size:13px;
@@ -143,92 +130,8 @@ body{
     line-height:1.55;
 }
 
-/* ANIMATION */
-@keyframes fadeUp {
-  0% {
-    opacity:0;
-    transform: translateY(12px);
-  }
-  100%{
-    opacity:1;
-    transform: translateY(0);
-  }
+/* animation keyframes */
+@keyframes fadeUp{
+    0%{opacity:0;transform:translateY(12px);}
+    100%{opacity:1;transform:translateY(0);}
 }
-
-.doc-card:nth-child(1){animation-delay:0s;}
-.doc-card:nth-child(2){animation-delay:.07s;}
-.doc-card:nth-child(3){animation-delay:.14s;}
-.doc-card:nth-child(4){animation-delay:.21s;}
-.doc-card:nth-child(5){animation-delay:.28s;}
-.doc-card:nth-child(6){animation-delay:.36s;}
-
-</style>
-
-</head>
-
-<body>
-
-<div id="header"></div>
-
-<section class="about-hero">
-    <h1>About Our OPD Clinic</h1>
-    <p>
-        We are a multi-speciality OPD / Clinic providing affordable and ethical medical consultations.
-        We focus on preventive care, correct diagnosis and minimum medicine based treatment approach.
-        Our goal is to ensure patients receive transparent clinical guidance and correct follow-up planning.
-    </p>
-</section>
-
-<h2 class="sec-title"><span></span>Our Doctors</h2>
-<section class="doctor-list" id="doctorContainer"></section>
-
-<section class="terms">
-    By using online appointment / tele-consultation, you agree that tele-medicine may have limitations without physical examination and advice is based on information you provide. You must disclose correct medical history, reports and medication. Emergency or serious symptoms require in-person emergency care and not online treatment. The clinic and doctors are not responsible for outcomes due to incomplete information, delay, misuse of prescriptions or not following instructions given. By continuing, you provide informed consent for telemedicine and accept all terms.
-</section>
-
-<div id="footer"></div>
-
-<script src="js/headerfooter.js"></script>
-
-<script>
-// DOCTOR DATA DYNAMIC
-const doctors = [
-    {
-      name:"Dr. Aarav Mehta",
-      degree:"MBBS, MD Medicines",
-      specialist:"Diabetology & Lifestyle Medicine",
-      exp:"12+ Years",
-      past:"Ex Resident - KEM Mumbai",
-      about:"Special interest in Diabetes, Thyroid & Hypertension lifestyle based control.",
-      photo:"assets/doctors/aarav.jpg"
-    },
-    {
-      name:"Dr. Siya Nair",
-      degree:"MBBS, MS OBGY",
-      specialist:"Women's Health & PCOS",
-      exp:"9+ Years",
-      past:"Ex JJ Hospital Mumbai",
-      about:"Preventive Women Health, PCOS Management and Antenatal Care specialist.",
-      photo:"assets/doctors/siya.jpg"
-    }
-];
-
-const box = document.getElementById("doctorContainer");
-
-doctors.forEach(d=>{
-    box.innerHTML += `
-    <div class="doc-card">
-        <div class="doc-photo"><img src="${d.photo}" alt=""></div>
-        <div class="doc-body">
-            <h3>${d.name}</h3>
-            <div class="spec">${d.specialist}</div>
-            <div class="meta">${d.degree} | ${d.exp} | ${d.past}</div>
-            <div class="about">${d.about}</div>
-        </div>
-    </div>
-    `;
-});
-</script>
-
-</body>
-</html>
