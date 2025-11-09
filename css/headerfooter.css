@@ -5,7 +5,7 @@
   box-sizing: border-box;
 }
 
-body {
+.hf-body {
   font-family: 'Segoe UI', system-ui, sans-serif;
   background: #0d0f12; /* darker background for consistency with dark mode */
   color: #e5e7eb;
