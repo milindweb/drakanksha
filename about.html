@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us & Clinic</title>
+
+<link rel="stylesheet" href="css/headerfooter.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+
+body{
+    background:#f4f7fb;
+}
+
+/* HERO */
+.about-hero{
+    background:rgba(255,255,255,0.35);
+    backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,0.4);
+    margin:25px auto;
+    width:92%;
+    max-width:1050px;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+.about-hero h1{
+    font-size:26px;
+    margin:0 0 10px 0;
+}
+.about-hero p{
+    margin:0;
+    line-height:1.55;
+    color:#475569;
+    font-size:15px;
+}
+
+/* Section title */
+.sec-title{
+    width:92%;
+    max-width:1050px;
+    margin:35px auto 14px;
+    font-size:20px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+.sec-title span{
+    width:10px;height:10px;border-radius:50%;
+    background:linear-gradient(90deg,#2563eb,#7c3aed);
+}
+
+/* Doctors list */
+.doctor-list{
+    width:92%;
+    max-width:1050px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+/* Card */
+.doc-card{
+    width:100%;
+    background:rgba(255,255,255,0.50);
+    backdrop-filter:blur(13px);
+    border:1px solid rgba(255,255,255,0.4);
+    border-radius:18px;
+    padding:16px;
+    display:flex;
+    gap:15px;
+    box-shadow:0 8px 18px rgba(0,0,0,0.06);
+    transition:.2s;
+}
+.doc-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 28px rgba(0,0,0,0.10);
+}
+
+.doc-photo{
+    width:78px;
+    height:78px;
+    border-radius:14px;
+    overflow:hidden;
+}
+.doc-photo img{
+    width:100%;height:100%;object-fit:cover;
+}
+
+.doc-body h3{
+    margin:0 0 3px 0;
+    font-size:18px;
+}
+.doc-body .spec{
+    display:inline-block;
+    font-size:12px;
+    background:#eff6ff;
+    color:#1e3a8a;
+    border:1px solid #dbeafe;
+    padding:4px 8px;
+    border-radius:9px;
+    margin-bottom:6px;
+}
+.doc-body .meta{
+    font-size:13px;
+    color:#334155;
+    margin-bottom:6px;
+}
+.doc-body .about{
+    font-size:14px;color:#475569;
+}
+
+/* TERMS */
+.terms{
+    width:92%;
+    max-width:1050px;
+    margin:40px auto;
+    background:rgba(255,255,255,0.45);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,0.4);
+    border-radius:18px;
+    padding:18px;
+    font-size:13px;
+    color:#334155;
+    line-height:1.55;
+}
+</style>
+</head>
+
+<body>
+
+<div id="header"></div>
+
+<section class="about-hero">
+    <h1>About Our OPD Clinic</h1>
+    <p>
+        We are a multi-speciality OPD / Clinic providing affordable and ethical medical consultations.
+        We focus on preventive care, correct diagnosis and minimum medicine based treatment approach.
+        Our goal is to ensure patients receive transparent clinical guidance and correct follow-up planning.
+    </p>
+</section>
+
+<h2 class="sec-title"><span></span>Our Doctors</h2>
+<section class="doctor-list" id="doctorContainer"></section>
+
+<section class="terms">
+    By using online appointment / tele-consultation, you agree that tele-medicine may have limitations without physical examination and advice is based on information you provide. You must disclose correct medical history, reports and medication. Emergency or serious symptoms require in-person emergency care and not online treatment. The clinic and doctors are not responsible for outcomes due to incomplete information, delay, misuse of prescriptions or not following instructions given. By continuing, you provide informed consent for telemedicine and accept all terms.
+</section>
+
+<div id="footer"></div>
+
+<script src="js/headerfooter.js"></script>
+
+<script>
+// DOCTOR DATA DYNAMIC
+const doctors = [
+    {
+      name:"Dr. Aarav Mehta",
+      degree:"MBBS, MD Medicines",
+      specialist:"Diabetology & Lifestyle Medicine",
+      exp:"12+ Years",
+      past:"Ex Resident - KEM Mumbai",
+      about:"Special interest in Diabetes, Thyroid & Hypertension lifestyle based control.",
+      photo:"assets/doctors/aarav.jpg"
+    },
+    {
+      name:"Dr. Siya Nair",
+      degree:"MBBS, MS OBGY",
+      specialist:"Women's Health & PCOS",
+      exp:"9+ Years",
+      past:"Ex JJ Hospital Mumbai",
+      about:"Preventive Women Health, PCOS Management and Antenatal Care specialist.",
+      photo:"assets/doctors/siya.jpg"
+    }
+];
+
+const box = document.getElementById("doctorContainer");
+
+doctors.forEach(d=>{
+    box.innerHTML += `
+    <div class="doc-card">
+        <div class="doc-photo"><img src="${d.photo}" alt=""></div>
+        <div class="doc-body">
+            <h3>${d.name}</h3>
+            <div class="spec">${d.specialist}</div>
+            <div class="meta">${d.degree} | ${d.exp} | ${d.past}</div>
+            <div class="about">${d.about}</div>
+        </div>
+    </div>
+    `;
+});
+</script>
+
+</body>
+</html>
