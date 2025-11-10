@@ -1,319 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clinic Information Portal</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clinic Information Portal</title>
 
-  <!-- Header + Footer CSS -->
-  <link rel="stylesheet" href="css/headerfooter.css">
+<!-- Header + Footer CSS -->
+<link rel="stylesheet" href="css/headerfooter.css">
 
-  <style>
-    body {
-      margin: 0;
-      background: #f6f8fb;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      color: #1e293b;
-    }
+<style>
+/* ======= BASE STYLES ======= */
+body {
+  margin: 0;
+  background: #f6f8fb;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #1e293b;
+}
+main {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-    main {
-      padding: 40px 20px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+/* ======= PAGE HEADER ======= */
+.info-header {
+  text-align: center;
+  background: linear-gradient(90deg, #0077b6, #0096c7);
+  color: #fff;
+  border-radius: 12px;
+  padding: 25px 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.info-header h1 { margin: 0; font-size: 26px; }
+.info-header p { margin-top: 8px; font-size: 15px; opacity: 0.95; }
 
-    /* ===== Header Section ===== */
-    .info-header {
-      text-align: center;
-      background: linear-gradient(90deg, #0077b6, #0096c7);
-      color: #fff;
-      border-radius: 14px;
-      padding: 25px 10px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
+/* ======= TABS ======= */
+.tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.tab {
+  padding: 10px 20px;
+  border-radius: 20px;
+  background: #e2e8f0;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: #334155;
+  transition: all 0.25s ease;
+}
+.tab.active {
+  background: #0096c7;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 150, 199, 0.25);
+}
 
-    .info-header h1 {
-      margin: 0;
-      font-size: 26px;
-    }
+/* ======= SEARCH BOX ======= */
+.search-box {
+  text-align: center;
+  margin-bottom: 20px;
+}
+#searchInput {
+  width: 90%;
+  max-width: 500px;
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+#searchInput:focus {
+  border-color: #0096c7;
+  box-shadow: 0 0 0 4px rgba(0, 150, 199, 0.1);
+}
 
-    .info-header p {
-      margin-top: 8px;
-      font-size: 15px;
-      opacity: 0.95;
-    }
+/* ======= TABLE DESIGN ======= */
+.table-wrapper {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+  padding: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
+}
+th {
+  background: #0096c7;
+  color: #fff;
+  text-transform: uppercase;
+}
+tr:nth-child(even) td {
+  background: #f9fafb;
+}
+tr:hover td {
+  background: #f0f9ff;
+}
 
-    /* ===== Tabs ===== */
-    .tabs {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
+/* ======= LAB CATEGORY HEADER ======= */
+.lab-category {
+  font-weight: 700;
+  font-size: 16px;
+  color: #0f172a;
+  border-left: 5px solid #0096c7;
+  padding-left: 8px;
+  margin: 25px 0 8px;
+}
 
-    .tab {
-      padding: 10px 20px;
-      border-radius: 20px;
-      background: #e2e8f0;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      color: #334155;
-      transition: all 0.25s ease;
-    }
-
-    .tab.active {
-      background: #0096c7;
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(0, 150, 199, 0.25);
-    }
-
-    /* ===== Search Box ===== */
-    .search-box {
-      text-align: center;
-      position: relative;
-      margin-bottom: 25px;
-    }
-
-    #searchInput {
-      width: 90%;
-      max-width: 500px;
-      padding: 12px 18px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      outline: none;
-      transition: 0.2s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    #searchInput:focus {
-      border-color: #0096c7;
-      box-shadow: 0 0 0 4px rgba(0,150,199,0.1);
-    }
-
-    /* ===== Suggestions ===== */
-    #suggestions {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 500px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      overflow: hidden;
-      z-index: 10;
-    }
-
-    .suggestion {
-      padding: 10px 15px;
-      border-bottom: 1px solid #f1f5f9;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .suggestion:hover {
-      background: #f0f9ff;
-    }
-
-    /* ===== List Style ===== */
-    .content-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .list-item {
-      background: #fff;
-      border-radius: 10px;
-      padding: 14px 18px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      transition: background 0.2s, transform 0.2s;
-      border-left: 5px solid #0096c7;
-    }
-
-    .list-item:hover {
-      background: #f0f9ff;
-      transform: translateX(3px);
-    }
-
-    .list-item h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-      color: #0f172a;
-    }
-
-    .list-item p {
-      margin: 2px 0;
-      color: #475569;
-      font-size: 14px;
-    }
-
-    @media (max-width: 600px) {
-      #searchInput { width: 95%; }
-    }
-  </style>
+@media (max-width: 600px) {
+  #searchInput { width: 95%; }
+  th, td { font-size: 13px; padding: 8px; }
+}
+</style>
 </head>
 
 <body>
-  <!-- Header -->
-  <div id="hf-header"></div>
+  <!-- ======= HEADER ======= -->
+  <div id="header"></div>
 
   <main>
     <section class="info-header">
       <h1>Clinic Information Portal</h1>
-      <p>Access Medicines, Complaints, and Lab Tests instantly</p>
+      <p>Medicines • Complaints • Laboratory Reference Ranges</p>
     </section>
 
-    <!-- Tabs -->
+    <!-- ======= TABS ======= -->
     <div class="tabs">
       <button class="tab active" data-target="medlist">Medicines</button>
       <button class="tab" data-target="complaint">Complaints</button>
       <button class="tab" data-target="labtest">Lab Tests</button>
     </div>
 
-    <!-- Search -->
+    <!-- ======= SEARCH ======= -->
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="🔍 Search...">
-      <div id="suggestions"></div>
     </div>
 
-    <!-- Content List -->
-    <div id="content" class="content-list"></div>
+    <!-- ======= MAIN CONTENT ======= -->
+    <div id="content" class="table-wrapper"></div>
   </main>
 
-  <!-- Footer -->
-  <div id="hf-footer"></div>
+  <!-- ======= FOOTER ======= -->
+  <div id="footer.html"></div>
 
-  <!-- JS to load header/footer -->
+  <!-- Load header/footer JS -->
   <script src="js/headerfooter.js" defer></script>
 
   <script>
-    // ===== Data Loader =====
-    const files = {
-      medlist: "data/medlist.json",
-      complaint: "data/complaint.json",
-      labtest: "data/labtest.json"
-    };
+  // ================== CONFIG ==================
+  const files = {
+    medlist: "data/medlist.json",
+    complaint: "data/complaint.json",
+    labtest: "data/labtest.json"
+  };
 
-    let data = {};
-    let activeTab = "medlist";
+  let data = {};
+  let activeTab = "medlist";
+  const content = document.getElementById("content");
 
-    async function loadData() {
-      for (const key in files) {
-        try {
-          const res = await fetch(files[key]);
-          if (!res.ok) throw new Error(`Failed to load ${files[key]}`);
-          data[key] = await res.json();
-        } catch (err) {
-          console.error(err);
-          data[key] = [];
-        }
+  // ================== LOAD JSON ==================
+  async function loadData() {
+    for (const key in files) {
+      try {
+        const res = await fetch(files[key]);
+        if (!res.ok) throw new Error("Failed to load " + files[key]);
+        data[key] = await res.json();
+      } catch (err) {
+        console.error(err);
+        data[key] = [];
       }
-      render(activeTab);
+    }
+    render(activeTab);
+  }
+
+  // ================== RENDER ==================
+  function render(type) {
+    const dataset = data[type];
+    if (!dataset) return;
+
+    if (type === "labtest") renderLabTests(dataset);
+    else if (type === "complaint") renderComplaints(dataset);
+    else renderMedicines(dataset);
+  }
+
+  // ======== MEDICINES TAB ========
+  function renderMedicines(list) {
+    if (!Array.isArray(list) || !list.length) {
+      content.innerHTML = `<p style="text-align:center;color:#64748b;">No medicine data found.</p>`;
+      return;
     }
 
-    // ===== Tabs =====
-    document.querySelectorAll(".tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
-        tab.classList.add("active");
-        activeTab = tab.dataset.target;
-        render(activeTab);
-        clearSearch();
-      });
-    });
+    const rows = list.map((m, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${m.categoryNo || ""}</td>
+        <td>${m.mainCategory || ""}</td>
+        <td>${(m.generic && m.generic.name) || m.generic || ""}</td>
+        <td>${Array.isArray(m.commonBrandNames) ? m.commonBrandNames.join(", ") : m.commonBrandNames || ""}</td>
+        <td>${Array.isArray(m.formsAvailable) ? m.formsAvailable.join(", ") : m.formsAvailable || ""}</td>
+        <td>${m.notes && typeof m.notes === "object" ? JSON.stringify(m.notes) : (m.notes || "")}</td>
+        <td>${m.remark || ""}</td>
+      </tr>
+    `).join("");
 
-    // ===== Render as List =====
-    const content = document.getElementById("content");
-    function render(type) {
-      const list = data[type] || [];
-      if (!list.length) {
-        content.innerHTML = `<p style="text-align:center;color:#64748b;padding:20px;">No data found for ${type}</p>`;
-        return;
-      }
+    content.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Category No</th>
+            <th>Main Category</th>
+            <th>Generic</th>
+            <th>Common Brand Names</th>
+            <th>Forms Available</th>
+            <th>Notes</th>
+            <th>Remark</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
 
-      content.innerHTML = list.map(item => `
-        <div class="list-item">
-          <h3>${item.name || item.title || item.test || item.complaint || "Untitled"}</h3>
-          ${Object.entries(item).map(([k, v]) => {
-            if (k === "name" || k === "title" || k === "test" || k === "complaint") return "";
-            return `<p><strong>${k}:</strong> ${Array.isArray(v) ? v.join(", ") : v}</p>`;
-          }).join('')}
-        </div>
-      `).join('');
+  // ======== COMPLAINTS TAB ========
+  function renderComplaints(list) {
+    if (!Array.isArray(list) || !list.length) {
+      content.innerHTML = `<p style="text-align:center;color:#64748b;">No complaint data found.</p>`;
+      return;
     }
 
-    // ===== Search & Autocomplete =====
-    const searchInput = document.getElementById("searchInput");
-    const suggestionsBox = document.getElementById("suggestions");
+    const rows = list.map((c, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${c.category || ""}</td>
+        <td>${c.complaint || c.title || ""}</td>
+        <td>${c.duration || ""}</td>
+        <td>${c.description || ""}</td>
+      </tr>
+    `).join("");
 
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.toLowerCase().trim();
-      if (!query) {
-        suggestionsBox.innerHTML = "";
-        suggestionsBox.style.display = "none";
-        render(activeTab);
-        return;
-      }
+    content.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Category</th>
+            <th>Complaint</th>
+            <th>Duration</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
 
-      const list = data[activeTab] || [];
-      const matches = list.filter(item =>
-        JSON.stringify(item).toLowerCase().includes(query)
-      ).slice(0, 8);
+  // ======== LAB TESTS TAB ========
+  function renderLabTests(labdata) {
+    const labTests = labdata.laboratoryTests || [];
+    if (!labTests.length) {
+      content.innerHTML = `<p style="text-align:center;color:#64748b;">No lab test data available.</p>`;
+      return;
+    }
 
-      suggestionsBox.innerHTML = matches.map(m =>
-        `<div class="suggestion">${m.name || m.test || m.complaint || "Result"}</div>`
-      ).join('');
+    content.innerHTML = labTests.map(cat => `
+      <div class="lab-category">${cat.category}</div>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Test Name</th><th>Normal Range</th></tr>
+        </thead>
+        <tbody>
+          ${cat.tests.map((t, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${t.testName}</td>
+              <td>${t.normalRange}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `).join("");
+  }
 
-      suggestionsBox.style.display = matches.length ? "block" : "none";
+  // ================== SEARCH ==================
+  const searchInput = document.getElementById("searchInput");
 
-      // Live filter list
-      const filtered = list.filter(item =>
-        JSON.stringify(item).toLowerCase().includes(query)
-      );
-      content.innerHTML = filtered.map(item => `
-        <div class="list-item">
-          <h3>${item.name || item.title || item.test || item.complaint || "Untitled"}</h3>
-          ${Object.entries(item).map(([k, v]) => {
-            if (k === "name" || k === "title" || k === "test" || k === "complaint") return "";
-            return `<p><strong>${k}:</strong> ${Array.isArray(v) ? v.join(", ") : v}</p>`;
-          }).join('')}
-        </div>
-      `).join('');
-    });
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.toLowerCase().trim();
+    if (!q) { render(activeTab); return; }
 
-    // Suggestion click
-    suggestionsBox.addEventListener("click", (e) => {
-      if (e.target.classList.contains("suggestion")) {
-        searchInput.value = e.target.textContent;
-        suggestionsBox.style.display = "none";
-        const query = e.target.textContent.toLowerCase();
-        const list = data[activeTab] || [];
-        const filtered = list.filter(item =>
-          JSON.stringify(item).toLowerCase().includes(query)
+    if (activeTab === "labtest") {
+      const labs = data.labtest.laboratoryTests || [];
+      const filtered = [];
+
+      labs.forEach(cat => {
+        const tests = cat.tests.filter(t =>
+          t.testName.toLowerCase().includes(q) ||
+          t.normalRange.toLowerCase().includes(q)
         );
-        content.innerHTML = filtered.map(item => `
-          <div class="list-item">
-            <h3>${item.name || item.title || item.test || item.complaint || "Untitled"}</h3>
-            ${Object.entries(item).map(([k, v]) => {
-              if (k === "name" || k === "title" || k === "test" || k === "complaint") return "";
-              return `<p><strong>${k}:</strong> ${Array.isArray(v) ? v.join(", ") : v}</p>`;
-            }).join('')}
-          </div>
-        `).join('');
-      }
-    });
-
-    function clearSearch() {
-      searchInput.value = "";
-      suggestionsBox.style.display = "none";
+        if (tests.length) filtered.push({ category: cat.category, tests });
+      });
+      renderLabTests({ laboratoryTests: filtered });
+    } else {
+      const list = data[activeTab] || [];
+      const filtered = list.filter(item =>
+        JSON.stringify(item).toLowerCase().includes(q)
+      );
+      activeTab === "complaint"
+        ? renderComplaints(filtered)
+        : renderMedicines(filtered);
     }
+  });
 
-    loadData();
+  // ================== TABS ==================
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      activeTab = tab.dataset.target;
+      searchInput.value = "";
+      render(activeTab);
+    });
+  });
+
+  // ================== INIT ==================
+  loadData();
   </script>
 </body>
 </html>
