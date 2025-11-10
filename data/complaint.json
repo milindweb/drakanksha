@@ -1,251 +1,355 @@
-[
-  {
-    "chiefComplaint": "General / Fever / Weakness",
-    "subSymptoms": [
-      "Fever",
-      "Body Pain",
-      "Malaise",
-      "Fatigue",
-      "Loss of Appetite",
-      "Chills",
-      "Sweating",
-      "Weight Loss",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Respiratory System",
-    "subSymptoms": [
-      "Cough",
-      "Cold",
-      "Sore Throat",
-      "Breathlessness",
-      "Chest Pain",
-      "Wheezing",
-      "Phlegm",
-      "Nasal Blockage",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "ENT (Ear, Nose, Throat)",
-    "subSymptoms": [
-      "Ear Pain",
-      "Ear Discharge",
-      "Hearing Loss",
-      "Nasal Congestion",
-      "Sneezing",
-      "Throat Pain",
-      "Tonsillitis",
-      "Sinus Pain",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Cardiovascular System",
-    "subSymptoms": [
-      "Chest Pain",
-      "Palpitation",
-      "Breathlessness",
-      "Swelling of Feet",
-      "Syncope / Fainting",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Gastrointestinal System",
-    "subSymptoms": [
-      "Abdominal Pain",
-      "Nausea / Vomiting",
-      "Loose Motion",
-      "Constipation",
-      "Acidity",
-      "Indigestion",
-      "Loss of Appetite",
-      "Jaundice",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Genitourinary System",
-    "subSymptoms": [
-      "Burning Micturition",
-      "Frequency of Urine",
-      "Hematuria",
-      "Flank Pain",
-      "Discharge",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Musculoskeletal System",
-    "subSymptoms": [
-      "Joint Pain",
-      "Back Pain",
-      "Neck Pain",
-      "Swelling of Joints",
-      "Muscle Pain",
-      "Injury",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Neurology",
-    "subSymptoms": [
-      "Headache",
-      "Dizziness",
-      "Tingling / Numbness",
-      "Seizure",
-      "Weakness of Limb",
-      "Loss of Consciousness",
-      "Tremor",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Dermatology / Skin",
-    "subSymptoms": [
-      "Itching",
-      "Rash",
-      "Boil",
-      "Swelling",
-      "Hair Fall",
-      "Pigmentation",
-      "Burns",
-      "Allergy",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Ophthalmology / Eye",
-    "subSymptoms": [
-      "Redness",
-      "Pain",
-      "Discharge",
-      "Watering",
-      "Blurring of Vision",
-      "Itching",
-      "Swelling",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Dental / Oral",
-    "subSymptoms": [
-      "Tooth Pain",
-      "Swelling Gums",
-      "Bleeding Gums",
-      "Ulcer",
-      "Bad Breath",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Endocrine / Metabolic",
-    "subSymptoms": [
-      "Increased Thirst",
-      "Increased Urine",
-      "Weight Gain",
-      "Weight Loss",
-      "Tremor",
-      "Sweating",
-      "Fatigue",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Gynecology / Obstetric",
-    "subSymptoms": [
-      "Menstrual Irregularity",
-      "Pain Abdomen",
-      "White Discharge",
-      "Antenatal Checkup",
-      "Postnatal Checkup",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Psychiatric / Behavioral",
-    "subSymptoms": [
-      "Anxiety",
-      "Depression",
-      "Sleep Disturbance / Insomnia",
-      "Irritability",
-      "Stress / Work Pressure",
-      "Phobia / Panic Attack",
-      "Memory Loss",
-      "Behavioral Change",
-      "Suicidal Thoughts",
-      "Substance Abuse / Addiction",
-      "Hallucination / Delusion",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Pediatric / Child Health",
-    "subSymptoms": [
-      "Fever",
-      "Cough / Cold",
-      "Loose Motion / Diarrhea",
-      "Vomiting",
-      "Poor Appetite",
-      "Failure to Gain Weight",
-      "Abdominal Pain",
-      "Skin Rash",
-      "Crying / Irritable Child",
-      "Ear Pain / Discharge",
-      "Eye Redness / Watering",
-      "Sore Throat / Tonsillitis",
-      "Worm Infestation",
-      "Immunization Visit",
-      "Developmental Delay",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Injury / Trauma",
-    "subSymptoms": [
-      "Cut / Laceration",
-      "Swelling / Contusion",
-      "Fracture Suspected",
-      "Sprain / Strain",
-      "Burn Injury",
-      "Foreign Body",
-      "Animal Bite / Dog Bite",
-      "Road Traffic Accident (RTA)",
-      "Workplace Injury",
-      "Head Injury",
-      "Eye Injury",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Post-Op / Follow-Up",
-    "subSymptoms": [
-      "Suture Removal",
-      "Dressing Change",
-      "Wound Inspection",
-      "Pain / Swelling at Surgical Site",
-      "Discharge / Infection",
-      "Stitch Abscess",
-      "Post-Op Fever",
-      "Post-Op Weakness",
-      "Medication Review",
-      "Follow-Up Consultation",
-      "Other / Not Listed"
-    ]
-  },
-  {
-    "chiefComplaint": "Other",
-    "subSymptoms": [
-      "Routine Health Check-Up",
-      "Pre-Employment / Fitness Check",
-      "Blood Pressure Monitoring",
-      "Diabetes Monitoring",
-      "Medication Refill",
-      "Lab Report Review",
-      "Referral Follow-Up",
-      "Other / Not Listed"
-    ]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinic Information Portal</title>
+
+<!-- ===== Load your existing Header + Footer CSS ===== -->
+<link rel="stylesheet" href="css/headerfooter.css">
+
+<style>
+/* ======== GENERAL LAYOUT ======== */
+body {
+  margin: 0;
+  background: #f6f8fb;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #1e293b;
+}
+
+main {
+  padding: 40px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ======== PAGE HEADER ======== */
+.info-header {
+  text-align: center;
+  background: linear-gradient(90deg, #0077b6, #0096c7);
+  color: #fff;
+  border-radius: 14px;
+  padding: 25px 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+.info-header h1 { margin: 0; font-size: 26px; }
+.info-header p { margin-top: 8px; font-size: 15px; opacity: 0.95; }
+
+/* ======== TABS ======== */
+.tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.tab {
+  padding: 10px 20px;
+  border-radius: 20px;
+  background: #e2e8f0;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: #334155;
+  transition: all 0.25s ease;
+}
+.tab.active {
+  background: #0096c7;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0,150,199,0.25);
+}
+
+/* ======== SEARCH ======== */
+.search-box {
+  text-align: center;
+  position: relative;
+  margin-bottom: 25px;
+}
+#searchInput {
+  width: 90%;
+  max-width: 500px;
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  outline: none;
+  transition: 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+#searchInput:focus {
+  border-color: #0096c7;
+  box-shadow: 0 0 0 4px rgba(0,150,199,0.1);
+}
+
+/* ======== TABLE DESIGN ======== */
+.table-container {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+th {
+  background: #0096c7;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+tr:nth-child(even) td { background: #f9fafb; }
+tr:hover td { background: #f0f9ff; }
+
+@media (max-width: 600px) {
+  #searchInput { width: 95%; }
+  th, td { font-size: 13px; padding: 8px; }
+}
+</style>
+</head>
+
+<body>
+<!-- ======== HEADER PLACEHOLDER ======== -->
+<div id="hf-header"></div>
+
+<main>
+  <section class="info-header">
+    <h1>Clinic Information Portal</h1>
+    <p>Medicines • Complaints • Laboratory Reference Ranges</p>
+  </section>
+
+  <!-- ======== TAB BUTTONS ======== -->
+  <div class="tabs">
+    <button class="tab active" data-target="medlist">Medicines</button>
+    <button class="tab" data-target="complaint">Complaints</button>
+    <button class="tab" data-target="labtest">Lab Tests</button>
+  </div>
+
+  <!-- ======== SEARCH BAR ======== -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 Search...">
+  </div>
+
+  <!-- ======== TABLE CONTAINER ======== -->
+  <div id="content" class="table-container"></div>
+</main>
+
+<!-- ======== FOOTER PLACEHOLDER ======== -->
+<div id="hf-footer"></div>
+
+<!-- ======== JS TO LOAD HEADER / FOOTER ======== -->
+<script src="js/headerfooter.js" defer></script>
+
+<script>
+// ===================================================
+// DATA FILE PATHS
+// ===================================================
+const files = {
+  medlist: "data/medlist.json",
+  complaint: "data/complaint.json",
+  labtest: "data/labtest.json"
+};
+
+let data = {};
+let activeTab = "medlist";
+
+// ===================================================
+// LOAD ALL JSON FILES
+// ===================================================
+async function loadData() {
+  for (const key in files) {
+    try {
+      const res = await fetch(files[key]);
+      if (!res.ok) throw new Error("Failed to load " + files[key]);
+      data[key] = await res.json();
+    } catch (err) {
+      console.error(err);
+      data[key] = [];
+    }
   }
-]
+  render(activeTab);
+}
+
+// ===================================================
+// RENDER FUNCTION — decides which renderer to use
+// ===================================================
+function render(type) {
+  const list = data[type];
+  if (!list) return;
+
+  if (type === "labtest") renderLabTable(list);
+  else if (type === "complaint") renderComplaintTable(list);
+  else renderMedicineTable(list);
+}
+
+// ===================================================
+// 1️⃣ MEDICINE TABLE
+// ===================================================
+function renderMedicineTable(list) {
+  // Expect array of medicine objects
+  if (!Array.isArray(list) || !list.length) {
+    content.innerHTML = `<p style="padding:15px;text-align:center;color:#64748b;">No medicine data found.</p>`;
+    return;
+  }
+
+  let rows = list.map((m, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${m.categoryNo || ""}</td>
+      <td>${m.mainCategory || ""}</td>
+      <td>${(m.generic && m.generic.name) || m.generic || ""}</td>
+      <td>${Array.isArray(m.commonBrandNames) ? m.commonBrandNames.join(", ") : m.commonBrandNames || ""}</td>
+      <td>${Array.isArray(m.formsAvailable) ? m.formsAvailable.join(", ") : m.formsAvailable || ""}</td>
+      <td>${m.notes && typeof m.notes === 'object' ? JSON.stringify(m.notes) : (m.notes || "")}</td>
+      <td>${m.remark || ""}</td>
+    </tr>
+  `).join("");
+
+  content.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Category No</th>
+          <th>Main Category</th>
+          <th>Generic</th>
+          <th>Common Brand Names</th>
+          <th>Forms Available</th>
+          <th>Notes</th>
+          <th>Remark</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+// ===================================================
+// 2️⃣ COMPLAINT TABLE
+// ===================================================
+function renderComplaintTable(list) {
+  // Expect array of complaint objects
+  if (!Array.isArray(list) || !list.length) {
+    content.innerHTML = `<p style="padding:15px;text-align:center;color:#64748b;">No complaint data found.</p>`;
+    return;
+  }
+
+  let rows = list.map((c, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${c.category || ""}</td>
+      <td>${c.complaint || c.title || ""}</td>
+      <td>${c.duration || ""}</td>
+      <td>${c.description || ""}</td>
+    </tr>
+  `).join("");
+
+  content.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Category</th>
+          <th>Complaint</th>
+          <th>Duration</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+// ===================================================
+// 3️⃣ LAB TEST TABLE
+// ===================================================
+function renderLabTable(labdata) {
+  const labs = labdata.laboratoryTests || [];
+  if (!labs.length) {
+    content.innerHTML = `<p style="padding:15px;text-align:center;color:#64748b;">No lab test data available.</p>`;
+    return;
+  }
+
+  // Build sections per category
+  content.innerHTML = labs.map(cat => `
+    <h3 style="margin:20px 0 8px;color:#0f172a;border-left:5px solid #0096c7;padding-left:8px;">${cat.category}</h3>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Test Name</th><th>Normal Range</th></tr>
+        </thead>
+        <tbody>
+          ${cat.tests.map((t, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${t.testName}</td>
+              <td>${t.normalRange}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `).join('');
+}
+
+// ===================================================
+// SEARCH FUNCTION (works for all tabs)
+// ===================================================
+const searchInput = document.getElementById("searchInput");
+const content = document.getElementById("content");
+
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.toLowerCase().trim();
+  if (!query) { render(activeTab); return; }
+
+  if (activeTab === "labtest") {
+    const labData = data.labtest.laboratoryTests || [];
+    const filtered = [];
+
+    labData.forEach(cat => {
+      const tests = cat.tests.filter(t =>
+        t.testName.toLowerCase().includes(query) ||
+        t.normalRange.toLowerCase().includes(query)
+      );
+      if (tests.length) filtered.push({category: cat.category, tests});
+    });
+
+    renderLabTable({laboratoryTests: filtered});
+  }
+  else {
+    const list = data[activeTab] || [];
+    const filtered = list.filter(item =>
+      JSON.stringify(item).toLowerCase().includes(query)
+    );
+    if (activeTab === "complaint") renderComplaintTable(filtered);
+    else renderMedicineTable(filtered);
+  }
+});
+
+// ===================================================
+// TAB SWITCHING
+// ===================================================
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    activeTab = tab.dataset.target;
+    searchInput.value = "";
+    render(activeTab);
+  });
+});
+
+// ===================================================
+// INIT
+// ===================================================
+loadData();
+</script>
+</body>
+</html>
