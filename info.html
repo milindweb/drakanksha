@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Clinic Information Portal</title>
 
-<!-- Header + Footer CSS -->
+<!-- Load Header + Footer CSS -->
 <link rel="stylesheet" href="css/headerfooter.css">
 
 <style>
-/* ======= BASE STYLES ======= */
+/* ======= BASE DESIGN ======= */
 body {
   margin: 0;
   background: #f6f8fb;
@@ -103,12 +103,8 @@ th {
   color: #fff;
   text-transform: uppercase;
 }
-tr:nth-child(even) td {
-  background: #f9fafb;
-}
-tr:hover td {
-  background: #f0f9ff;
-}
+tr:nth-child(even) td { background: #f9fafb; }
+tr:hover td { background: #f0f9ff; }
 
 /* ======= LAB CATEGORY HEADER ======= */
 .lab-category {
@@ -128,8 +124,8 @@ tr:hover td {
 </head>
 
 <body>
-  <!-- ======= HEADER ======= -->
-  <div id="header"></div>
+  <!-- HEADER -->
+  <div id="header.html"></div>
 
   <main>
     <section class="info-header">
@@ -137,30 +133,30 @@ tr:hover td {
       <p>Medicines • Complaints • Laboratory Reference Ranges</p>
     </section>
 
-    <!-- ======= TABS ======= -->
+    <!-- TABS -->
     <div class="tabs">
       <button class="tab active" data-target="medlist">Medicines</button>
       <button class="tab" data-target="complaint">Complaints</button>
       <button class="tab" data-target="labtest">Lab Tests</button>
     </div>
 
-    <!-- ======= SEARCH ======= -->
+    <!-- SEARCH -->
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="🔍 Search...">
     </div>
 
-    <!-- ======= MAIN CONTENT ======= -->
+    <!-- TABLE CONTENT -->
     <div id="content" class="table-wrapper"></div>
   </main>
 
-  <!-- ======= FOOTER ======= -->
+  <!-- FOOTER -->
   <div id="footer.html"></div>
 
-  <!-- Load header/footer JS -->
+  <!-- Load Header/Footer -->
   <script src="js/headerfooter.js" defer></script>
 
   <script>
-  // ================== CONFIG ==================
+  // ============ CONFIG ============
   const files = {
     medlist: "data/medlist.json",
     complaint: "data/complaint.json",
@@ -171,7 +167,7 @@ tr:hover td {
   let activeTab = "medlist";
   const content = document.getElementById("content");
 
-  // ================== LOAD JSON ==================
+  // ============ LOAD DATA ============
   async function loadData() {
     for (const key in files) {
       try {
@@ -186,7 +182,7 @@ tr:hover td {
     render(activeTab);
   }
 
-  // ================== RENDER ==================
+  // ============ RENDER HANDLER ============
   function render(type) {
     const dataset = data[type];
     if (!dataset) return;
@@ -196,14 +192,15 @@ tr:hover td {
     else renderMedicines(dataset);
   }
 
-  // ======== MEDICINES TAB ========
+  // ============ MEDICINES TABLE ============
   function renderMedicines(list) {
-    if (!Array.isArray(list) || !list.length) {
+    const meds = Array.isArray(list.medicines) ? list.medicines : list;
+    if (!Array.isArray(meds) || !meds.length) {
       content.innerHTML = `<p style="text-align:center;color:#64748b;">No medicine data found.</p>`;
       return;
     }
 
-    const rows = list.map((m, i) => `
+    const rows = meds.map((m, i) => `
       <tr>
         <td>${i + 1}</td>
         <td>${m.categoryNo || ""}</td>
@@ -211,7 +208,6 @@ tr:hover td {
         <td>${(m.generic && m.generic.name) || m.generic || ""}</td>
         <td>${Array.isArray(m.commonBrandNames) ? m.commonBrandNames.join(", ") : m.commonBrandNames || ""}</td>
         <td>${Array.isArray(m.formsAvailable) ? m.formsAvailable.join(", ") : m.formsAvailable || ""}</td>
-        <td>${m.notes && typeof m.notes === "object" ? JSON.stringify(m.notes) : (m.notes || "")}</td>
         <td>${m.remark || ""}</td>
       </tr>
     `).join("");
@@ -226,7 +222,6 @@ tr:hover td {
             <th>Generic</th>
             <th>Common Brand Names</th>
             <th>Forms Available</th>
-            <th>Notes</th>
             <th>Remark</th>
           </tr>
         </thead>
@@ -235,14 +230,15 @@ tr:hover td {
     `;
   }
 
-  // ======== COMPLAINTS TAB ========
+  // ============ COMPLAINTS TABLE ============
   function renderComplaints(list) {
-    if (!Array.isArray(list) || !list.length) {
+    const complaints = Array.isArray(list.complaints) ? list.complaints : list;
+    if (!Array.isArray(complaints) || !complaints.length) {
       content.innerHTML = `<p style="text-align:center;color:#64748b;">No complaint data found.</p>`;
       return;
     }
 
-    const rows = list.map((c, i) => `
+    const rows = complaints.map((c, i) => `
       <tr>
         <td>${i + 1}</td>
         <td>${c.category || ""}</td>
@@ -268,34 +264,49 @@ tr:hover td {
     `;
   }
 
-  // ======== LAB TESTS TAB ========
+  // ============ LAB TEST TABLE ============
   function renderLabTests(labdata) {
-    const labTests = labdata.laboratoryTests || [];
-    if (!labTests.length) {
+    const labs = labdata.laboratoryTests || [];
+    if (!labs.length) {
       content.innerHTML = `<p style="text-align:center;color:#64748b;">No lab test data available.</p>`;
       return;
     }
 
-    content.innerHTML = labTests.map(cat => `
-      <div class="lab-category">${cat.category}</div>
+    // Flatten all tests with category name
+    const allTests = labs.flatMap(cat =>
+      cat.tests.map((t, i) => ({
+        index: i + 1,
+        category: cat.category,
+        testName: t.testName,
+        normalRange: t.normalRange
+      }))
+    );
+
+    const rows = allTests.map((t, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${t.category}</td>
+        <td>${t.testName}</td>
+        <td>${t.normalRange}</td>
+      </tr>
+    `).join("");
+
+    content.innerHTML = `
       <table>
         <thead>
-          <tr><th>#</th><th>Test Name</th><th>Normal Range</th></tr>
+          <tr>
+            <th>#</th>
+            <th>Category</th>
+            <th>Test Name</th>
+            <th>Normal Range</th>
+          </tr>
         </thead>
-        <tbody>
-          ${cat.tests.map((t, i) => `
-            <tr>
-              <td>${i + 1}</td>
-              <td>${t.testName}</td>
-              <td>${t.normalRange}</td>
-            </tr>
-          `).join("")}
-        </tbody>
+        <tbody>${rows}</tbody>
       </table>
-    `).join("");
+    `;
   }
 
-  // ================== SEARCH ==================
+  // ============ SEARCH FUNCTION ============
   const searchInput = document.getElementById("searchInput");
 
   searchInput.addEventListener("input", () => {
@@ -316,7 +327,10 @@ tr:hover td {
       renderLabTests({ laboratoryTests: filtered });
     } else {
       const list = data[activeTab] || [];
-      const filtered = list.filter(item =>
+      const arr = Array.isArray(list.medicines || list.complaints)
+        ? (list.medicines || list.complaints)
+        : list;
+      const filtered = arr.filter(item =>
         JSON.stringify(item).toLowerCase().includes(q)
       );
       activeTab === "complaint"
@@ -325,7 +339,7 @@ tr:hover td {
     }
   });
 
-  // ================== TABS ==================
+  // ============ TAB SWITCH ============
   document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", () => {
       document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
@@ -336,7 +350,7 @@ tr:hover td {
     });
   });
 
-  // ================== INIT ==================
+  // ============ INITIAL LOAD ============
   loadData();
   </script>
 </body>
