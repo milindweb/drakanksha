@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinic Information Portal</title>
+
+  <!-- Header + Footer CSS -->
+  <link rel="stylesheet" href="css/headerfooter.css">
+
+  <style>
+    /* ===== Page Layout ===== */
+    body {
+      margin: 0;
+      background: #f6f8fb;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #1e293b;
+    }
+
+    main {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ===== Header Card ===== */
+    .info-header {
+      text-align: center;
+      background: linear-gradient(90deg, #0077b6, #0096c7);
+      color: #fff;
+      border-radius: 14px;
+      padding: 25px 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    .info-header h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+    .info-header p {
+      margin-top: 8px;
+      font-size: 15px;
+      opacity: 0.95;
+    }
+
+    /* ===== Tabs ===== */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .tab {
+      padding: 10px 20px;
+      border-radius: 20px;
+      background: #e2e8f0;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #334155;
+      transition: all 0.25s ease;
+    }
+    .tab.active {
+      background: #0096c7;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 150, 199, 0.25);
+    }
+
+    /* ===== Search Box ===== */
+    .search-box {
+      text-align: center;
+      position: relative;
+      margin-bottom: 30px;
+    }
+    #searchInput {
+      width: 90%;
+      max-width: 500px;
+      padding: 12px 18px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      outline: none;
+      transition: 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    #searchInput:focus {
+      border-color: #0096c7;
+      box-shadow: 0 0 0 4px rgba(0,150,199,0.1);
+    }
+
+    /* Autocomplete dropdown */
+    #suggestions {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 500px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      overflow: hidden;
+      z-index: 10;
+    }
+    .suggestion {
+      padding: 10px 15px;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .suggestion:hover {
+      background: #f0f9ff;
+    }
+
+    /* ===== Card Grid ===== */
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      transition: 0.25s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      color: #0f172a;
+    }
+    .card p {
+      margin: 4px 0;
+      color: #475569;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      #searchInput { width: 95%; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <div id="hf-header"></div>
+
+  <main>
+    <section class="info-header">
+      <h1>Clinic Information Portal</h1>
+      <p>Access medicines, common complaints, and lab test data instantly</p>
+    </section>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-target="medlist">Medicines</button>
+      <button class="tab" data-target="complaint">Complaints</button>
+      <button class="tab" data-target="labtest">Lab Tests</button>
+    </div>
+
+    <!-- Search -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="🔍 Search anything...">
+      <div id="suggestions"></div>
+    </div>
+
+    <!-- Content -->
+    <div id="content" class="content-grid"></div>
+  </main>
+
+  <!-- Footer -->
+  <div id="hf-footer"></div>
+
+  <!-- JS to load header/footer -->
+  <script src="js/headerfooter.js" defer></script>
+
+  <script>
+    // ===== Load Data =====
+    const files = ['medlist', 'complaint', 'labtest'];
+    let data = {};
+    let active = 'medlist';
+
+    async function loadData() {
+      for (let f of files) {
+        const res = await fetch(`data/${f}.json`);
+        data[f] = await res.json();
+      }
+      render(active);
+    }
+
+    // ===== Tabs =====
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        active = tab.dataset.target;
+        render(active);
+        clearSearch();
+      });
+    });
+
+    // ===== Render =====
+    const content = document.getElementById('content');
+    function render(type) {
+      const list = data[type];
+      content.innerHTML = list.map(item => `
+        <div class="card">
+          ${Object.entries(item).map(([key, val]) => `
+            <p><strong>${key}:</strong> ${Array.isArray(val) ? val.join(', ') : val}</p>
+          `).join('')}
+        </div>
+      `).join('');
+    }
+
+    // ===== Search + Autocomplete =====
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsBox = document.getElementById('suggestions');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+      if (!query) {
+        suggestionsBox.innerHTML = '';
+        suggestionsBox.style.display = 'none';
+        render(active);
+        return;
+      }
+      const list = data[active];
+      const matches = list.filter(item =>
+        JSON.stringify(item).toLowerCase().includes(query)
+      ).slice(0, 8);
+
+      suggestionsBox.innerHTML = matches.map(m =>
+        `<div class="suggestion">${Object.values(m)[1] || Object.values(m)[0]}</div>`
+      ).join('');
+
+      suggestionsBox.style.display = matches.length ? 'block' : 'none';
+
+      // live filter main grid too
+      const filtered = list.filter(item =>
+        JSON.stringify(item).toLowerCase().includes(query)
+      );
+      content.innerHTML = filtered.map(item => `
+        <div class="card">
+          ${Object.entries(item).map(([key, val]) => `
+            <p><strong>${key}:</strong> ${Array.isArray(val) ? val.join(', ') : val}</p>
+          `).join('')}
+        </div>
+      `).join('');
+    });
+
+    // click suggestion
+    suggestionsBox.addEventListener('click', (e) => {
+      if (e.target.classList.contains('suggestion')) {
+        searchInput.value = e.target.textContent;
+        suggestionsBox.style.display = 'none';
+        const query = e.target.textContent.toLowerCase();
+        const list = data[active];
+        const filtered = list.filter(item =>
+          JSON.stringify(item).toLowerCase().includes(query)
+        );
+        content.innerHTML = filtered.map(item => `
+          <div class="card">
+            ${Object.entries(item).map(([key, val]) => `
+              <p><strong>${key}:</strong> ${Array.isArray(val) ? val.join(', ') : val}</p>
+            `).join('')}
+          </div>
+        `).join('');
+      }
+    });
+
+    function clearSearch() {
+      searchInput.value = '';
+      suggestionsBox.style.display = 'none';
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
