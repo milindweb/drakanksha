@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY CLINIC - CONTACT US</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Header + Footer CSS -->
+  <link rel="stylesheet" href="css/headerfooter.css">
+  <script src="js/headerfooter.js" defer></script>
+
+  <!-- Scoped CSS -->
+  <style>
+    :root {
+      --white: #ffffff;
+      --text-primary: #222222;
+      --text-secondary: #555555;
+      --primary-color: #3498db;
+      --warning-color: #ffc107;
+      --success-color: #2ecc71;
+      --info-color: #17a2b8;
+      --border-light: #e5e7eb;
+      --border-radius: 12px;
+      --shadow-md: 0 2px 6px rgba(0,0,0,0.08);
+      --shadow-lg: 0 4px 12px rgba(0,0,0,0.15);
+      --transition: 0.3s ease;
+    }
+
+    .main-content {
+      flex: 1;
+      background: #f5f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .main-content .container {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: #f9fafb;
+    }
+
+    .card__header span {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .card__header i { font-size: 1.2rem; }
+    .card__header--primary i { color: var(--primary-color); }
+    .card__header--warning i { color: var(--warning-color); }
+    .card__header--success i { color: var(--success-color); }
+    .card__header--info i { color: var(--info-color); }
+
+    .card__content {
+      padding: 1.5rem;
+      display: none;
+      color: var(--text-secondary);
+    }
+
+    .card.active .card__content {
+      display: block;
+    }
+
+    .card__toggle {
+      transition: transform var(--transition);
+    }
+    .card.active .card__toggle {
+      transform: rotate(180deg);
+    }
+
+    /* Always visible cards */
+    .card.always-visible .card__header {
+      cursor: default;
+      background: #fdfdfd;
+    }
+    .card.always-visible .card__content {
+      display: block !important;
+    }
+
+    /* Contact form always visible */
+    #form-container {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-md);
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Placeholder -->
+  <div id="header"></div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- About & Services (Always Visible at Top) -->
+      <div class="card always-visible">
+        <div class="card__header card__header--primary">
+          <span><i class="fas fa-briefcase"></i> About & Services</span>
+        </div>
+        <div class="card__content">
+          <p>Welcome to our medical website, designed to provide trusted healthcare information and professional medical services.
+We aim to offer quality treatment, accurate health guidance, and easy communication between patients and doctors.
+Our services include general consultation, specialized treatments, laboratory diagnostics, and preventive health care.
+All medical advice or information provided here is for educational purposes only and should not replace consultation with a qualified healthcare professional.</p>
+        </div>
+      </div>
+
+      <!-- Privacy Policy -->
+      <div class="card">
+        <div class="card__header card__header--primary">
+          <span><i class="fas fa-user-shield"></i> Privacy Policy</span>
+          <i class="fas fa-chevron-down card__toggle"></i>
+        </div>
+        <div class="card__content">
+          <p>We value your privacy and are committed to protecting your personal and medical information.
+All patient data collected through our website, forms, or systems is kept confidential and used only for healthcare or administrative purposes.
+We do not share, sell, or disclose any personal details without your explicit consent, except as required by law.
+By using our services, you agree to our privacy practices and understand that electronic communication may carry inherent risks.</p>
+        </div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="card">
+        <div class="card__header card__header--warning">
+          <span><i class="fas fa-exclamation-circle"></i> Disclaimer</span>
+          <i class="fas fa-chevron-down card__toggle"></i>
+        </div>
+        <div class="card__content">
+          <p>This website provides general medical information for educational and awareness purposes only.
+It is not a substitute for professional medical diagnosis, advice, or treatment.
+Always consult a registered medical practitioner for health concerns.
+We are not responsible for any decisions or actions taken based on information found on this site.
+While we strive to keep information accurate, medical knowledge constantly evolves, and we cannot guarantee completeness or error-free content.</p>
+        </div>
+      </div>
+
+      <!-- Terms & Conditions -->
+      <div class="card">
+        <div class="card__header card__header--success">
+          <span><i class="fas fa-file-contract"></i> Terms & Conditions</span>
+          <i class="fas fa-chevron-down card__toggle"></i>
+        </div>
+        <div class="card__content">
+          <p>By accessing or using this website, you agree to follow all terms mentioned here.
+All information, design, and content on this site are the property of the clinic and may not be copied or reproduced without permission.
+We reserve the right to modify or discontinue services, prices, or policies at any time without prior notice.
+Use of this website implies acceptance of our policies and acknowledgment that medical results and opinions may vary per individual.</p>
+        </div>
+      </div>
+
+      <!-- Terms of Use -->
+      <div class="card">
+        <div class="card__header card__header--info">
+          <span><i class="fas fa-gavel"></i> Terms of Use</span>
+          <i class="fas fa-chevron-down card__toggle"></i>
+        </div>
+        <div class="card__content">
+          <p>This website is intended for lawful use only.
+You agree not to misuse any medical data, form, or digital content.
+We are not liable for damages, losses, or interruptions caused by external factors, system errors, or unauthorized access.
+Continued use of this website constitutes your agreement to comply with our terms and applicable healthcare laws.</p>
+        </div>
+      </div>
+
+      <!-- Feedback & Suggestions -->
+      <div class="card">
+        <div class="card__header card__header--success">
+          <span><i class="fas fa-comment-dots"></i> Feedback & Suggestions</span>
+          <i class="fas fa-chevron-down card__toggle"></i>
+        </div>
+        <div class="card__content">
+          <p>We welcome your valuable feedback and suggestions to improve our healthcare services and website experience.
+Please note that while we appreciate your input, we may not be able to respond to every message.
+Feedback that includes medical queries will not receive treatment advice online; such issues should be addressed during consultation with a doctor.
+All suggestions become the property of the clinic and may be used to enhance our services responsibly.</p>
+        </div>
+      </div>
+
+      <!-- Contact Form (Always Visible at Bottom) -->
+      <div id="form-container"></div>
+      <script>
+        fetch("contactform.html")
+          .then(res => res.text())
+          .then(html => {
+            document.getElementById("form-container").innerHTML = html;
+            const script = document.createElement("script");
+            script.src = "js/form-handler.js";
+            document.body.appendChild(script);
+          });
+      </script>
+    </div>
+  </main>
+
+  <!-- Footer Placeholder -->
+  <div id="footer"></div>
+
+  <!-- Accordion Script -->
+  <script>
+    document.querySelectorAll('.card__header').forEach(header => {
+      if (!header.parentElement.classList.contains('always-visible')) {
+        header.addEventListener('click', () => {
+          const card = header.parentElement;
+          card.classList.toggle('active');
+        });
+      }
+    });
+  </script>
+</body>
+</html>
