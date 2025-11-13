@@ -4,28 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Profile Viewer</title>
+
+  <!-- Global Header & Footer Loader -->
+  <link rel="stylesheet" href="css/headerfooter.css">
+  <script src="js/headerfooter.js" defer></script>
+
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
       background: #f1f5f9;
       margin: 0;
       padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
-    header {
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white;
-      width: 100%;
-      padding: 15px;
+
+    h2.page-title {
       text-align: center;
-      font-size: 1.4em;
-      letter-spacing: 1px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      margin-top: 20px;
+      font-size: 1.6rem;
+      color: #0f172a;
     }
+
     .search-box {
-      margin: 20px;
+      margin: 20px auto;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -67,7 +67,7 @@
       max-width: 900px;
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-      margin-bottom: 40px;
+      margin: 30px auto 50px;
       overflow: hidden;
       display: none;
       transition: 0.3s ease-in-out;
@@ -80,8 +80,8 @@
       padding: 20px;
     }
     .profile-header img {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       margin-right: 20px;
       border: 3px solid #334155;
@@ -110,12 +110,14 @@
     td[contenteditable="true"] {
       background: #fff8dc;
     }
+
     .edit-icon {
       cursor: pointer;
       color: #2563eb;
       margin-left: 8px;
       font-size: 14px;
     }
+
     .update-btn {
       background: #2563eb;
       color: white;
@@ -139,7 +141,6 @@
       color: white;
       padding: 12px 20px;
       border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       opacity: 0;
       transform: translateY(-10px);
       transition: all 0.4s ease;
@@ -155,6 +156,7 @@
       .profile-header {
         flex-direction: column;
         align-items: center;
+        text-align: center;
       }
       .profile-header img {
         margin-bottom: 10px;
@@ -162,25 +164,31 @@
     }
   </style>
 </head>
+
 <body>
 
-  <header>🔍 Patient Profile Viewer</header>
+  <!-- DYNAMIC HEADER -->
+  <div id="header"></div>
 
-  <!-- Section 1: Search -->
+  <h2 class="page-title">🔍 Patient Profile Viewer</h2>
+
+  <!-- Search Section -->
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search by Name, OPD No, or Mobile..." autocomplete="off" />
     <div class="suggestions" id="suggestions"></div>
   </div>
 
-  <!-- Section 2: Profile View -->
+  <!-- Profile Section -->
   <div class="profile-card" id="profileCard">
     <div class="profile-header">
-      <img src="https://i.ibb.co/sK7PjGf/profile-avatar.png" alt="Profile Photo">
+      <img src="https://i.ibb.co/sK7PjGf/profile-avatar.png" alt="Profile">
       <div>
         <h2 id="patientName"></h2>
-        <p><strong>OPD No:</strong> <span id="opdNo"></span> | <strong>Mobile:</strong> <span id="mobileNo"></span></p>
+        <p><strong>OPD No:</strong> <span id="opdNo"></span> |
+           <strong>Mobile:</strong> <span id="mobileNo"></span></p>
       </div>
     </div>
+
     <div class="profile-body">
       <table id="patientTable">
         <thead>
@@ -192,8 +200,11 @@
     </div>
   </div>
 
-  <!-- Success Popup -->
-  <div class="success-popup" id="successPopup">✅ Updated successfully!</div>
+  <!-- Success Toast -->
+  <div class="success-popup" id="successPopup">Updated!</div>
+
+  <!-- Footer -->
+  <div id="footer"></div>
 
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbwgRNLtac8jSFw8a9DTAwHaHMx8kgu4Ba7JhpTUgee1WfOK00zYIJ-zQIgG0TY1UuY37A/exec";
@@ -204,24 +215,16 @@
     async function fetchAllPatients() {
       const res = await fetch(scriptURL + "?action=read");
       allPatients = await res.json();
-      console.log("Fetched", allPatients.length, "records");
     }
-
     fetchAllPatients();
 
     const searchInput = document.getElementById("searchInput");
     const suggestions = document.getElementById("suggestions");
-    const profileCard = document.getElementById("profileCard");
-    const tableHeader = document.getElementById("tableHeader");
-    const tableBody = document.getElementById("tableBody");
-    const successPopup = document.getElementById("successPopup");
 
     searchInput.addEventListener("input", () => {
       const query = searchInput.value.trim().toLowerCase();
-      if (!query) {
-        suggestions.style.display = "none";
-        return;
-      }
+      if (!query) return suggestions.style.display = "none";
+
       const matches = allPatients.filter(p =>
         (p.patientName && p.patientName.toLowerCase().includes(query)) ||
         (p.opdNo && p.opdNo.toLowerCase().includes(query)) ||
@@ -229,32 +232,36 @@
       );
 
       suggestions.innerHTML = "";
-      if (matches.length > 0) {
-        suggestions.style.display = "block";
-        matches.slice(0, 10).forEach(p => {
-          const div = document.createElement("div");
-          div.className = "suggestion-item";
-          div.textContent = `${p.patientName} (${p.opdNo || "No OPD"})`;
-          div.addEventListener("click", () => showPatientProfile(p.patientName));
-          suggestions.appendChild(div);
-        });
-      } else {
-        suggestions.style.display = "none";
-      }
+      if (matches.length === 0) return suggestions.style.display = "none";
+
+      suggestions.style.display = "block";
+
+      matches.slice(0, 10).forEach(p => {
+        const div = document.createElement("div");
+        div.className = "suggestion-item";
+        div.textContent = `${p.patientName} (${p.opdNo || "No OPD"})`;
+
+        div.addEventListener("click", () => showPatientProfile(p));
+        suggestions.appendChild(div);
+      });
     });
 
-    function showPatientProfile(name) {
-      filteredPatients = allPatients.filter(p => p.patientName === name);
+    function showPatientProfile(selected) {
+      filteredPatients = allPatients.filter(p =>
+        p.patientName.toLowerCase() === selected.patientName.toLowerCase()
+      );
+
       suggestions.style.display = "none";
-      searchInput.value = name;
+      searchInput.value = selected.patientName;
 
-      if (filteredPatients.length === 0) return;
-      profileCard.style.display = "block";
-      document.getElementById("patientName").textContent = name;
-      document.getElementById("opdNo").textContent = filteredPatients[0].opdNo || "";
-      document.getElementById("mobileNo").textContent = filteredPatients[0].mobileNo || "";
+      const card = document.getElementById("profileCard");
+      card.style.display = "block";
 
-      const keys = Object.keys(filteredPatients[0]);
+      document.getElementById("patientName").textContent = selected.patientName;
+      document.getElementById("opdNo").textContent = selected.opdNo || "";
+      document.getElementById("mobileNo").textContent = selected.mobileNo || "";
+
+      const keys = Object.keys(selected);
       tableHeader.innerHTML = "";
       tableBody.innerHTML = "";
 
@@ -264,19 +271,24 @@
         tableHeader.appendChild(th);
       });
 
-      filteredPatients.forEach((record, rowIndex) => {
+      filteredPatients.forEach((r, rowIndex) => {
         const tr = document.createElement("tr");
+
         keys.forEach(k => {
           const td = document.createElement("td");
-          td.textContent = record[k];
+          td.textContent = r[k];
+
           td.addEventListener("dblclick", () => makeEditable(td, k, rowIndex));
+
           const edit = document.createElement("span");
           edit.innerHTML = "✏️";
           edit.className = "edit-icon";
           edit.addEventListener("click", () => makeEditable(td, k, rowIndex));
+
           td.appendChild(edit);
           tr.appendChild(td);
         });
+
         tableBody.appendChild(tr);
       });
     }
@@ -285,32 +297,37 @@
       td.contentEditable = true;
       td.focus();
       td.style.background = "#fff8dc";
+
       td.addEventListener("blur", () => {
         td.contentEditable = false;
         td.style.background = "";
-        filteredPatients[rowIndex][key] = td.textContent.trim();
+        filteredPatients[rowIndex][key] = td.childNodes[0].nodeValue.trim();
       }, { once: true });
     }
 
     document.getElementById("updateBtn").addEventListener("click", async () => {
       if (filteredPatients.length === 0) return alert("No patient selected!");
-      const confirmUpdate = confirm("Update this patient's data?");
-      if (!confirmUpdate) return;
 
       const res = await fetch(scriptURL, {
         method: "POST",
-        body: JSON.stringify({ action: "updatePatient", data: filteredPatients }),
+        body: JSON.stringify({
+          action: "updatePatient",
+          data: filteredPatients
+        }),
         headers: { "Content-Type": "application/json" }
       });
+
       const result = await res.json();
-      showPopup(result.message || "✅ Updated successfully!");
+      showPopup(result.message || "Updated!");
     });
 
     function showPopup(msg) {
-      successPopup.textContent = msg;
-      successPopup.classList.add("show");
-      setTimeout(() => successPopup.classList.remove("show"), 3000);
+      const popup = document.getElementById("successPopup");
+      popup.textContent = msg;
+      popup.classList.add("show");
+      setTimeout(() => popup.classList.remove("show"), 3000);
     }
   </script>
+
 </body>
 </html>
